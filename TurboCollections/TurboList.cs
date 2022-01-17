@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-
-namespace TurboCollections
+﻿namespace TurboCollections
 {
-    public class TurboList<T> : IEnumerable<T>
+    public class TurboList<T>
     {
         private T[] items;
         public TurboList()
@@ -125,7 +120,8 @@ namespace TurboCollections
         // IEnumerator<T>.GetEnumerator();
         public IEnumerator<T> GetEnumerator()
         {
-            IEnumerator<T> enumerator = items;
+            IEnumerable<T> enumerable = items;
+            return enumerable.GetEnumerator();
         }
 
 

@@ -171,7 +171,8 @@ namespace TurboCollections.Test
             list.Add(3);
             list.Add(4);
             list.Add(5);
-            Assert.IsTrue();
+
+            Assert.IsTrue(list.GetEnumerator() is IEnumerator);
         }
 
         // [Test]
