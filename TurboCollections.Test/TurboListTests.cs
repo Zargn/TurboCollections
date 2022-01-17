@@ -116,6 +116,52 @@ namespace TurboCollections.Test
             list.Add(5);
             Assert.AreEqual(-1, list.IndexOf(42));
         }
+
+        [Test]
+        public void RemoveFindsAndRemovesItem()
+        {
+            var list = new TurboList<int>();
+            list.Add(3);
+            list.Add(4);
+            list.Add(5);
+            list.Remove(3);
+            Assert.AreNotEqual(3, list.Get(0));
+        }
+        
+        [Test]
+        public void RemoveDoesntFindItem()
+        {
+            var list = new TurboList<int>();
+            list.Add(3);
+            list.Add(4);
+            list.Add(5);
+            list.Remove(42);
+            Assert.AreEqual(3, list.Count);
+        }
+        
+        [Test]
+        public void AddRangeAddsEnoughItems()
+        {
+            var list = new TurboList<int>();
+            int[] input = new[] {3, 4, 5};
+            list.Add(3);
+            list.Add(4);
+            list.Add(5);
+            list.AddRange(input);
+            Assert.AreEqual(6, list.Count);
+        }
+        
+        [Test]
+        public void AddRangeAddsItemsAtCorrectPlaces()
+        {
+            var list = new TurboList<int>();
+            int[] input = new[] {3, 4, 5};
+            list.Add(3);
+            list.Add(4);
+            list.Add(5);
+            list.AddRange(input);
+            Assert.AreEqual(3, list.Get(3));
+        }
         
         // [Test]
         // public void

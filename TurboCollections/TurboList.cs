@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace TurboCollections
 {
@@ -20,7 +22,7 @@ namespace TurboCollections
         // adds one item to the end of the list.
         public void Add(T item)
         {
-            items = ReSize(Count + 1, items);
+            items = ReSize(items, Count + 1);
             items[^1] = item;
         }
 
@@ -91,23 +93,39 @@ namespace TurboCollections
             return -1;
         }
         
+        
+        
         // removes the specified item from the list, if it can be found.
         public void Remove(T item)
         {
             if (IndexOf(item) != -1)
             {
-                
+                RemoveAt(IndexOf(item));
             }
         }
         
-        // // adds multiple items to this list at once.
-        // void AddRange(IEnumerable<T> items);
+        
+        
+        // adds multiple items to this list at once.
+        public void AddRange(IEnumerable<T> itemsToAdd)
+        {
+            int currentIndex = Count;
+            items = ReSize(items, Count + itemsToAdd.Count());
+            foreach (var item in itemsToAdd)
+            {
+                items[currentIndex] = item;
+                currentIndex++;
+            }
+        }
+        
+        
         
         // // gets the iterator for this collection. Used by IEnumerator to support foreach.
         // IEnumerator<T>.GetEnumerator();
 
 
-        private T[] ReSize(int lenght, T[] array)
+
+        private T[] ReSize(T[] array, int lenght)
         {
             var result = new T[lenght];
             for (int i = 0; i < Math.Min(Count, lenght); i++)
@@ -127,21 +145,5 @@ namespace TurboCollections
 
             items = newArray;
         }
-
-        // private T[] ScanAndClean()
-        // {
-        //     var result = new T[items.Length];
-        //     int currentIndex = 0;
-        //     for (int i = 0; i < items.Length; i++)
-        //     {
-        //         if (items[i] != )
-        //         {
-        //             result[currentIndex] = items[i];
-        //             currentIndex++;
-        //         }
-        //     }
-        //
-        //     return ReSize(currentIndex, result);
-        // }
     }
 }
