@@ -1,3 +1,5 @@
+using System.Collections;
+using System.Collections.Generic;
 using NUnit.Framework;
 using TurboCollections;
 
@@ -162,7 +164,16 @@ namespace TurboCollections.Test
             list.AddRange(input);
             Assert.AreEqual(3, list.Get(3));
         }
-        
+
+        [Test] public void GetEnumeratorWorks()
+        {
+            var list = new TurboList<int>();
+            list.Add(3);
+            list.Add(4);
+            list.Add(5);
+            Assert.IsTrue();
+        }
+
         // [Test]
         // public void
         // {

@@ -1,10 +1,11 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace TurboCollections
 {
-    public class TurboList<T>
+    public class TurboList<T> : IEnumerable<T>
     {
         private T[] items;
         public TurboList()
@@ -122,6 +123,10 @@ namespace TurboCollections
         
         // // gets the iterator for this collection. Used by IEnumerator to support foreach.
         // IEnumerator<T>.GetEnumerator();
+        public IEnumerator<T> GetEnumerator()
+        {
+            IEnumerator<T> enumerator = items;
+        }
 
 
 
