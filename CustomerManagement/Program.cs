@@ -116,9 +116,10 @@ namespace CustomerManagement
 
         void DisplayAllCustomers()
         {
+            var currentIndex = 0;
             foreach (var customer in Customers)
             {
-                
+                Console.WriteLine($"({currentIndex}): {customer}");
             }
         }
     }

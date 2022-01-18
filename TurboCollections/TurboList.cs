@@ -1,4 +1,8 @@
-﻿namespace TurboCollections
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace TurboCollections
 {
     public class TurboList<T>
     {
