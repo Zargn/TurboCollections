@@ -1,18 +1,68 @@
+using System.Collections.Generic;
 using NUnit.Framework;
 
 namespace TurboCollections.Test
 {
     public class TurboListTests
     {
+        TurboList<T> GetList<T>() {
+            return new TurboList<T>();
+        }
+
+        int GetListCount<T>(TurboList<T> inputList) {
+            return inputList.Count;
+        }
+
+        TurboList<T> AddElementsToList<T>(TurboList<T> inputList, T item) {
+            inputList.Add(item);
+            return inputList;
+        }
+
+        TurboList<T> SetElementAtIndexInList<T>(TurboList<T> inputList, int index ,T item) {
+            inputList.Set(index, item);
+            return inputList;
+        }
+
+        TurboList<T> ClearList<T>(TurboList<T> inputList) {
+            inputList.Clear();
+            return inputList;
+        }
         
+        TurboList<T> RemoveAtIndexInList<T>(TurboList<T> inputList, int index) {
+            inputList.RemoveAt(index);
+            return inputList;
+        }
         
+        bool ListContains<T>(TurboList<T> inputList, T item) {
+            return inputList.Contains(item);
+        }
         
+        int IndexOfInList<T>(TurboList<T> inputList, T item) {
+            return inputList.IndexOf(item);
+        }
+        
+        TurboList<T> RemoveItemFromList<T>(TurboList<T> inputList, T item) {
+            inputList.Remove(item);
+            return inputList;
+        }
+        
+        TurboList<T> AddRangeOfElementsToList<T>(TurboList<T> inputList, IEnumerable<T> items) {
+            inputList.AddRange(items);
+            return inputList;
+        }
+
+
         [Test]
         public void NewListIsEmpty()
         {
-            var list = new TurboList<int>();
-            Assert.Zero(list.Count);
+            var list = GetList<int>();
+            Assert.Zero(GetListCount(list));
         }
+        
+                    
+            
+        // var list = new TurboList<int>();
+        // Assert.Zero(list.Count);
 
         [Test, TestCase(1), TestCase(4), TestCase(42)]
         public void AddingAnElementIncreases(int numberOfElements)
