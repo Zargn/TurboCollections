@@ -1,29 +1,31 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+using System.Collections;
 
 namespace TurboCollections
 {
-    public class TurboList<T>
+    public class TurboList<T> : IEnumerable<T>
     {
-        private T[] items;
-        public TurboList()
+        private T[] items = new T[4];
+
+        public int Count
         {
-            items = Array.Empty<T>();
+            get;
+            private set;
         }
 
 
 
         // returns the current amount of items contained in the list.
-        public int Count => items.Length;
+        public int CountOLD => items.Length;
 
         
         
         // adds one item to the end of the list.
         public void Add(T item)
         {
-            items = ReSize(items, Count + 1);
-            items[^1] = item;
+            ReSizeToTarget(Count + 1);
+            items[Count] = item;
+            Count++;
         }
 
         
@@ -53,7 +55,8 @@ namespace TurboCollections
         // removes all items from the list.
         public void Clear()
         {
-            items = Array.Empty<T>();
+            items = new T[4];
+            Count = 0;
         }
 
         
@@ -64,20 +67,12 @@ namespace TurboCollections
             if (index > Count || index < 0)
                 throw new System.Exception("Requested index was out of range of the list!");
 
-            var result = new T[Count - 1];
-            var currentIndex = 0;
-
-            for (int i = 0; i < Count; i++)
+            for (int i = index; i < Count - 1; i++)
             {
-                if (i != index)
-                {
-                    result[currentIndex] = items[i];
-                    currentIndex++;
-                }
+                items[i] = items[i + 1];
             }
 
-
-            items = result;
+            Count--;
         }
 
         
@@ -123,46 +118,91 @@ namespace TurboCollections
         // adds multiple items to this list at once.
         public void AddRange(IEnumerable<T> itemsToAdd)
         {
-            int currentIndex = Count;
-            items = ReSize(items, Count + itemsToAdd.Count());
+            ReSizeToTarget(Count + itemsToAdd.Count());
+
             foreach (var item in itemsToAdd)
             {
-                items[currentIndex] = item;
-                currentIndex++;
+                items[Count] = item;
+                Count++;
             }
         }
         
         
         
         // // gets the iterator for this collection. Used by IEnumerator to support foreach.
-        // IEnumerator<T>.GetEnumerator();
         public IEnumerator<T> GetEnumerator()
         {
-            IEnumerable<T> enumerable = items;
+            T[] result = new T[Count];
+            for (int i = 0; i < Count; i++)
+            {
+                result[i] = items[i];
+            }
+
+            IEnumerable<T> enumerable = result;
             return enumerable.GetEnumerator();
         }
 
 
-
-        private T[] ReSize(T[] array, int lenght)
+        IEnumerator IEnumerable.GetEnumerator()
         {
-            var result = new T[lenght];
-            for (int i = 0; i < Math.Min(Count, lenght); i++)
+            return GetEnumerator();
+        }
+        
+        
+
+        private void ReSizeToTarget(int targetLenght)
+        {
+            if (targetLenght <= items.Length)
+                return;
+
+            int sizeToAdd = 0;
+            while (targetLenght > items.Length + sizeToAdd)
             {
-                result[i] = array[i];
+                sizeToAdd = (items.Length + sizeToAdd) * 2;
             }
 
-            return result;
-
-            
-            // Marc's stuff.
-            T[] newArray = new T[Count + 1];
+            var result = new T[items.Length + sizeToAdd];
             for (int i = 0; i < Count; i++)
             {
-                newArray[i] = items[i];
+                result[i] = items[i];
             }
 
-            items = newArray;
+            items = result;
+        }
+
+        public struct Enumerator : IEnumerator<T>
+        {
+            private readonly T[] items;
+            private readonly int count;
+            private int index;
+
+            public Enumerator(T[] items, int count)
+            {
+                this.items = items;
+                this.count = count;
+                this.index = -1;
+            }
+
+            public bool MoveNext()
+            {
+                if (index >= count)
+                    return false;
+                return ++index < count;
+            }
+
+            public void Reset()
+            {
+                index = -1;
+            }
+
+            public T Current => items[index];
+
+            object IEnumerator.Current => Current;
+
+            public void Dispose()
+            {
+                Reset();
+            }
         }
     }
 }

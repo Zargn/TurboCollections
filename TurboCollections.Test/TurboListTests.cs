@@ -26,7 +26,7 @@ namespace TurboCollections.Test
                 list.Add(5);
             Assert.AreEqual(numberOfElements,list.Count);
         }
-
+        
         [Test]
         public void AddedElementGoesInCorrectIndex()
         {
@@ -35,7 +35,7 @@ namespace TurboCollections.Test
             list.Add(3);
             Assert.AreEqual(3, list.Get(1));
         }
-
+        
         [Test]
         public void GetCommandReturnsCorrectItem()
         {
@@ -43,7 +43,7 @@ namespace TurboCollections.Test
             list.Add(4);
             Assert.AreEqual(4, list.Get(0));
         }
-
+        
         [Test]
         public void ClearRemovesEverythingFromList()
         {
@@ -64,7 +64,7 @@ namespace TurboCollections.Test
             list.Add(5);
             list.Add(42);
             list.RemoveAt(1);
-            Assert.AreNotEqual(42,list.Get(1));
+            Assert.AreNotEqual(4,list.Get(1));
         }
         
         [Test]
@@ -74,8 +74,9 @@ namespace TurboCollections.Test
             list.Add(3);
             list.Add(4);
             list.Add(5);
+            list.Add(5);
             list.RemoveAt(2);
-            Assert.AreEqual(2,list.Count);
+            Assert.AreEqual(3,list.Count);
         }
         
         [Test]
@@ -117,7 +118,7 @@ namespace TurboCollections.Test
             list.Add(5);
             Assert.AreEqual(-1, list.IndexOf(42));
         }
-
+        
         [Test]
         public void RemoveFindsAndRemovesItem()
         {
@@ -174,15 +175,20 @@ namespace TurboCollections.Test
             list.Set(1, 42);
             Assert.AreEqual(42, list.Get(1));
         }
-
+        
         [Test] public void GetEnumeratorWorks()
         {
             var list = new TurboList<int>();
             list.Add(3);
             list.Add(4);
             list.Add(5);
-
-            Assert.IsTrue(list.GetEnumerator() is IEnumerator);
+            var resultNumber = 0;
+            foreach (var VARIABLE in list)
+            {
+                resultNumber = VARIABLE;
+            }
+        
+            Assert.AreEqual(5, resultNumber);
         }
 
         // [Test]

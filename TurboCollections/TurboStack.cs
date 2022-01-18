@@ -1,6 +1,8 @@
-﻿namespace TurboCollections
+﻿using System.Collections;
+
+namespace TurboCollections
 {
-    public class TurboStack<T>
+    public class TurboStack<T> : IEnumerable<T>
     {
         private T[] items = new T[2];
 
@@ -57,8 +59,22 @@
             items = Array.Empty<T>();
             Count = 0;
         }
+        
+        
 
+        void ReSize()
+        {
+            var result = new T[items.Length * 2];
+            for (int i = 0; i < Count; i++)
+            {
+                result[i] = items[i];
+            }
 
+            items = result;
+        }
+
+        
+        
         // gets the iterator for this collection. Used by IEnumerable<T>-Interface to support foreach.
         // IEnumerator<T> IEnumerable<T>.GetEnumerator();
         public IEnumerator<T> GetEnumerator()
@@ -73,16 +89,11 @@
             return enumerable.GetEnumerator();
         }
         
-
-        void ReSize()
+        
+        
+        IEnumerator IEnumerable.GetEnumerator()
         {
-            var result = new T[items.Length * 2];
-            for (int i = 0; i < Count; i++)
-            {
-                result[i] = items[i];
-            }
-
-            items = result;
+            return GetEnumerator();
         }
     }
 }
