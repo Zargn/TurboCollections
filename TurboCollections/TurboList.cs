@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-
-namespace TurboCollections
+﻿namespace TurboCollections
 {
     public class TurboList<T>
     {
@@ -133,6 +129,11 @@ namespace TurboCollections
         
         // // gets the iterator for this collection. Used by IEnumerator to support foreach.
         // IEnumerator<T>.GetEnumerator();
+        public IEnumerator<T> GetEnumerator()
+        {
+            IEnumerable<T> enumerable = items;
+            return enumerable.GetEnumerator();
+        }
 
 
 

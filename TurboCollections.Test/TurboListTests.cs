@@ -173,5 +173,21 @@ namespace TurboCollections.Test
             list.Set(1, 42);
             Assert.AreEqual(42, list.Get(1));
         }
+
+        [Test] public void GetEnumeratorWorks()
+        {
+            var list = new TurboList<int>();
+            list.Add(3);
+            list.Add(4);
+            list.Add(5);
+
+            Assert.IsTrue(list.GetEnumerator() is IEnumerator);
+        }
+
+        // [Test]
+        // public void
+        // {
+        //     var list = new TurboList<int>();
+        // }
     }
 }
