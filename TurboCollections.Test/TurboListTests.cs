@@ -163,10 +163,15 @@ namespace TurboCollections.Test
             Assert.AreEqual(3, list.Get(3));
         }
         
-        // [Test]
-        // public void
-        // {
-        //     var list = new TurboList<int>();
-        // }
+        [Test]
+        public void SetSetsTheCorrectItemAtIndex()
+        {
+            var list = new TurboList<int>();
+            list.Add(3);
+            list.Add(4);
+            list.Add(5);
+            list.Set(1, 42);
+            Assert.AreEqual(42, list.Get(1));
+        }
     }
 }

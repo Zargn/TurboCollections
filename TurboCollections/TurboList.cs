@@ -39,6 +39,17 @@ namespace TurboCollections
 
         
         
+        // replaces the item at the specified index. If the index is outside the correct range, an exception is thrown.
+        public void Set(int index, T value)
+        {
+            if (index > Count || index < 0)
+                throw new System.Exception("Requested index was out of range of the list!");
+
+            items[index] = value;
+        }
+        
+        
+        
         // removes all items from the list.
         public void Clear()
         {
