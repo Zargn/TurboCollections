@@ -1,16 +1,12 @@
-using System.Collections;
 using NUnit.Framework;
-using TurboCollections;
 
 namespace TurboCollections.Test
 {
     public class TurboListTests
     {
-        // [SetUp]
-        // public void Setup()
-        // {
-        // }
-
+        
+        
+        
         [Test]
         public void NewListIsEmpty()
         {
@@ -190,11 +186,5 @@ namespace TurboCollections.Test
         
             Assert.AreEqual(5, resultNumber);
         }
-
-        // [Test]
-        // public void
-        // {
-        //     var list = new TurboList<int>();
-        // }
     }
 }

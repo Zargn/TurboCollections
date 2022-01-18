@@ -72,7 +72,7 @@ namespace TurboCollections
 
             items = result;
         }
-
+    
         
         
         // gets the iterator for this collection. Used by IEnumerable<T>-Interface to support foreach.
