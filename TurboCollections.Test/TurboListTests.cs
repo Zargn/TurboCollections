@@ -137,7 +137,7 @@ namespace TurboCollections.Test
             list.Add(4);
             list.Add(5);
             list.Remove(42);
-            Assert.AreEqual(3, list.Count);
+            Assert.IsFalse(list.Remove(42));
         }
         
         [Test]

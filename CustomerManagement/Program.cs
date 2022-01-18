@@ -89,7 +89,9 @@ namespace CustomerManagement
         void RemoveCustomerByName()
         {
             Console.WriteLine("Please enter name of customer to remove: ");
-            Customers.Remove(Console.ReadLine() ?? "NoName");
+            string name = Console.ReadLine() ?? "NoName";
+            if (Customers.Remove(name))
+                Console.WriteLine($"Successfully removed {name} from the customer's list");
         }
 
         void RemoveCustomerByIndex()
@@ -110,7 +112,7 @@ namespace CustomerManagement
                 }
             }
 
-            Console.WriteLine($"Removing customer at index {index}");
+            Console.WriteLine($"Removing customer {Customers.Get(index)} at index {index}");
             Customers.RemoveAt(index);
         }
 
@@ -120,6 +122,7 @@ namespace CustomerManagement
             foreach (var customer in Customers)
             {
                 Console.WriteLine($"({currentIndex}): {customer}");
+                currentIndex++;
             }
         }
     }

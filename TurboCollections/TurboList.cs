@@ -107,12 +107,15 @@ namespace TurboCollections
         
         
         // removes the specified item from the list, if it can be found.
-        public void Remove(T item)
+        public bool Remove(T item)
         {
             if (IndexOf(item) != -1)
             {
                 RemoveAt(IndexOf(item));
+                return true;
             }
+
+            return false;
         }
         
         
