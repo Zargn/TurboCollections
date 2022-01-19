@@ -14,28 +14,23 @@ public class TurboQueue<T>
     /// This holds the current offset to apply so you get the correct data when peeking or Dequeueing.
     /// </summary>
     private int startIndexOffset = 0;
-
-    private int memoryToPerformanceBalance;
-
     
-
-
-    public TurboQueue(int memoryToPerformanceBalance = 0)
-    {
-        this.memoryToPerformanceBalance = memoryToPerformanceBalance;
-    }
-
+    
 
     // adds one item to the back of the queue.
     public void Enqueue(T item)
     {
-        if (Count + startIndexOffset >= items.Length) 
-            ShiftArrayToStart();
-
         if (Count == items.Length)
             ReSizeToFit(Count + 1);
 
-        items[Count] = item;
+        if (Count + startIndexOffset == items.Length)
+        {
+            items[Count + startIndexOffset - items.Length] = item;
+        }
+        else
+        {
+            items[Count] = item;
+        }
         Count++;
     }
     
@@ -45,7 +40,7 @@ public class TurboQueue<T>
     public T Peek()
     {
         if (Count == 0)
-            throw new System.Exception("Queue is empty! There is nothing to remove and return!");
+            throw new System.Exception("Queue is empty! There is nothing to return!");
         
         return items[startIndexOffset];
     }
@@ -61,6 +56,8 @@ public class TurboQueue<T>
         T itemToReturn = items[startIndexOffset];
         items[startIndexOffset] = default(T);
         startIndexOffset++;
+        if (startIndexOffset == items.Length)
+            startIndexOffset = 0;
         return itemToReturn;
     }
     
@@ -99,15 +96,24 @@ public class TurboQueue<T>
         items = result;
     }
 
+    
+    
     /// <summary>
     /// Shifts the internal array back to index 0.
     /// </summary>
     void ShiftArrayToStart()
     {
-        for (int i = startIndexOffset; i < Count + startIndexOffset; i++)
+        T[] result = new T[items.Length];
+
+        int resetToZeroOffset = 0;
+        for (int i = 0; i < Count; i++)
         {
-            items[i - startIndexOffset] = items[i];
+            if (i + startIndexOffset == items.Length)
+                resetToZeroOffset = items.Length * -1;
+            result[i] = items[i + startIndexOffset + resetToZeroOffset];
         }
+
+        items = result;
     }
     
     

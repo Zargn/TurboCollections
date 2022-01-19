@@ -52,8 +52,27 @@ namespace TurboCollections.Test
             queue.Enqueue(1);
             queue.Enqueue(2);
             queue.Enqueue(3);
+            queue.Clear();
             Assert.AreEqual(0, queue.Count);
-            Assert.Catch(queue.Dequeue());
+        }
+        
+        [Test]
+        public void EnqueueWorksCorrectlyAfterUnqueueing()
+        {
+            TurboQueue<int> queue = new TurboQueue<int>();
+            queue.Enqueue(1);
+            queue.Enqueue(2);
+            queue.Enqueue(3);
+            queue.Enqueue(4);
+            queue.Dequeue();
+            queue.Enqueue(5);
+            queue.Dequeue();
+            queue.Dequeue();
+            queue.Dequeue();
+            queue.Enqueue(6);
+            queue.Enqueue(7);
+            queue.Dequeue();
+            Assert.AreEqual(6, queue.Peek());
         }
         
         // [Test]
