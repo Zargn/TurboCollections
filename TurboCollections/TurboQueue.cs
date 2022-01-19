@@ -1,6 +1,8 @@
+using System.Collections;
+
 namespace TurboCollections
 {
-    public class TurboQueue<T>
+    public class TurboQueue<T> : IEnumerable<T>
     {
         private T[] items = new T[4];
 
@@ -53,6 +55,7 @@ namespace TurboCollections
             T itemToReturn = items[startIndexOffset];
             items[startIndexOffset] = default(T);
             startIndexOffset++;
+            Count--;
             if (startIndexOffset == items.Length)
                 startIndexOffset = 0;
             return itemToReturn;
@@ -116,9 +119,31 @@ namespace TurboCollections
 
 
 
-// // --------------- optional ---------------
-// // gets the iterator for this collection. Used by IEnumerable<T>-Interface to support foreach.
-//     IEnumerator<T> IEnumerable<T>.GetEnumerator(); 
+        // --------------- optional ---------------
+        // gets the iterator for this collection. Used by IEnumerable<T>-Interface to support foreach.
+        public IEnumerator<T> GetEnumerator()
+        {
+            T[] result = new T[Count];
+            int resetToZeroOffset = 0;
+            for (int i = 0; i < Count; i++)
+            {
+                if (i + startIndexOffset == items.Length)
+                    resetToZeroOffset = items.Length * -1;
+                result[i] = items[i + startIndexOffset + resetToZeroOffset];
+            }
 
+            IEnumerable<T> enumerable = result;
+            foreach (var VARIABLE in result)
+            {
+                Console.WriteLine(VARIABLE);
+            }
+
+            return enumerable.GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
     }
 }

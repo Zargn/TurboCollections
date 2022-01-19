@@ -74,6 +74,25 @@ namespace TurboCollections.Test
             queue.Dequeue();
             Assert.AreEqual(6, queue.Peek());
         }
+
+        [Test]
+        public void GetEnumeratorReturnsCorrectEnumerator()
+        {
+            TurboQueue<int> queue = new TurboQueue<int>();
+            queue.Enqueue(1);
+            queue.Enqueue(2);
+            queue.Enqueue(3);
+            queue.Enqueue(4);
+            queue.Dequeue();
+            queue.Enqueue(5);
+            var resultInt = 0;
+            int i = 2;
+            foreach (var item in queue)
+            {
+                Assert.AreEqual(i, item);
+                i++;
+            }
+        }
         
         // [Test]
         // public void 
