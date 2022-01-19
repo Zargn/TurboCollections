@@ -45,8 +45,52 @@ namespace TurboCollectionsSpeedTests
 
         void ListTester()
         {
+            TurboList<int> list = new();
+            // List<int> list = new();
             Stopwatch stopwatch = new();
+
+            Console.WriteLine("Starting Add test");
+            
             stopwatch.Start();
+            for (int i = 0; i < testIterations; i++)
+            {
+                list.Add(i);
+            }
+            stopwatch.Stop();
+            Console.WriteLine("Add test completed");
+            long AddTestTime = stopwatch.ElapsedMilliseconds;
+            stopwatch.Reset();
+            
+            
+            Console.WriteLine("Starting RemoveAt test");
+            
+            stopwatch.Start();
+            for (int i = 0; i < testIterations; i++)
+            {
+                list.RemoveAt(testIterations - 1 - i);
+            }
+            stopwatch.Stop();
+            Console.WriteLine("RemoveAt test completed");
+            long RemoveAtTestTime = stopwatch.ElapsedMilliseconds;
+            stopwatch.Reset();
+            
+            
+            Console.WriteLine("Starting AddRemove test");
+            
+            stopwatch.Start();
+            for (int i = 0; i < testIterations; i++)
+            {
+                list.Add(i);
+                list.RemoveAt(0);
+            }
+            stopwatch.Stop();
+            Console.WriteLine("AddRemove test completed");
+            long AddRemoveAtTestTime = stopwatch.ElapsedMilliseconds;
+            stopwatch.Reset();
+
+            Console.WriteLine($"Add test took: {AddTestTime} milliseconds");
+            Console.WriteLine($"RemoveAt test took: {RemoveAtTestTime} milliseconds");
+            Console.WriteLine($"AddRemoveAt test took: {AddRemoveAtTestTime} milliseconds");
         }
 
         void StackTester()
