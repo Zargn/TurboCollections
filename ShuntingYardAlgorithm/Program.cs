@@ -18,15 +18,13 @@ namespace ShuntingYardAlgorithm
 
     public struct MathOperation
     {
-        public MathOperation(decimal value1, decimal value2, Math calculationMode)
+        public MathOperation(decimal value, Math calculationMode)
         {
-            this.value1 = value1;
-            this.value2 = value2;
+            this.value = value;
             this.calculationMode = calculationMode;
         }
         
-        public decimal value1;
-        public decimal value2;
+        public decimal value;
         public Math calculationMode;
     }
 
