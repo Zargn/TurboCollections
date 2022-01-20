@@ -27,7 +27,7 @@ public class Tests
         int index = 0;
         foreach (var VARIABLE in result)
         {
-            Assert.AreEqual(comparison[index], VARIABLE);
+            Assert.AreEqual(comparison[index], VARIABLE.Text);
             index++;
         }
     }

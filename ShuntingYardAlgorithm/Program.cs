@@ -8,12 +8,38 @@ namespace ShuntingYardAlgorithm
         {
             ShuntingYardAlgorithm shuntingYardAlgorithm = new();
 
-            TurboQueue<string> result = new TurboQueue<string>();
+            TurboQueue<Token> result = new TurboQueue<Token>();
             while (result.Count == 0)
             {
                 result = shuntingYardAlgorithm.ConvertToReversePolish("I AM NOT MATH");
             }
         }
+    }
+    
+    
+    
+    public struct Token
+    {
+        public Token(string text, TokenType type)
+        {
+            Text = text;
+            Type = type;
+        }
+
+        public string Text;
+        public TokenType Type;
+    }
+
+
+    public enum TokenType
+    {
+        Number,
+        Add = 1,
+        Subtract = 2,
+        Divide = 3,
+        Multiply = 4,
+        LeftBracket,
+        RightBracket
     }
 
     // public struct MathOperation
@@ -40,16 +66,18 @@ namespace ShuntingYardAlgorithm
     {
         private char[] ValidCharacters = new char[] {'+', '-', '*', '/', '(', ')'};
         
-        public TurboQueue<string> ConvertToReversePolish(string input)
+        public TurboQueue<Token> ConvertToReversePolish(string input)
         {
             var tokenQueue = GatherTokens(input);
             if (tokenQueue.Count == 0)
-                return new TurboQueue<string>();
+                return new TurboQueue<Token>();
 
             return ConvertFromTokenQueue(tokenQueue);
         }
         
         /*
+         
+         Parentheses, Exponents, Multiplication and Division, Addition and Subtraction (from left to right). 
         1.  While there are tokens to be read:
         2.        Read a token
         3.        If it's a number add it to queue
@@ -59,50 +87,23 @@ namespace ShuntingYardAlgorithm
         7.               Push the current operator onto the stack
         8.        If it's a left bracket push it onto the stack
         9.        If it's a right bracket 
-        10.            While there's not a left bracket at the top of the stack:
-        11.                     Pop operators from the stack onto the output queue.
-        12.             Pop the left bracket from the stack and discard it
+        10.              While there's not a left bracket at the top of the stack:
+        11.                      Pop operators from the stack onto the output queue.
+        12.              Pop the left bracket from the stack and discard it
         13. While there are operators on the stack, pop them to the queue */
 
-        public TurboQueue<string> ConvertFromTokenQueue(TurboQueue<string> tokenQueue)
+        public TurboQueue<Token> ConvertFromTokenQueue(TurboQueue<Token> tokenQueue)
         {
             while (tokenQueue.Count != 0)
             {
                 var currentToken = tokenQueue.Dequeue();
                 
             }
-            
-            
-            
+
             // TODO: TEMPORARY
-            return new TurboQueue<string>();
+            return new TurboQueue<Token>();
         }
 
-
-        public struct Token
-        {
-            public Token(string text, TokenType type)
-            {
-                Text = text;
-                Type = type;
-            }
-
-            public string Text;
-            public TokenType Type;
-        }
-
-
-        public enum TokenType
-        {
-            Number,
-            Add,
-            Subtract,
-            Divide,
-            Multiply,
-            LeftBracket,
-            RightBracket
-        }
-        
 
 
         /// <summary>
@@ -110,9 +111,9 @@ namespace ShuntingYardAlgorithm
         /// </summary>
         /// <param name="input"></param>
         /// <returns>Returns a queue of tokens, or a empty queue if input is invalid.</returns>
-        public TurboQueue<string> GatherTokens(string input)
+        public TurboQueue<Token> GatherTokens(string input)
         {
-            TurboQueue<string> result = new();
+            TurboQueue<Token> result = new();
 
             string? number = "";
             foreach (var character in input)
@@ -124,18 +125,48 @@ namespace ShuntingYardAlgorithm
                 }
                 if (number != null)
                 {
-                    result.Enqueue(number);
+                    result.Enqueue(new Token(number, TokenType.Number));
                     number = null;
                 }
 
                 if (!CharIsValidCheck(character))
                 {
-                    return new TurboQueue<string>();
+                    return new TurboQueue<Token>();
                 }
-                result.Enqueue(character.ToString());
+                result.Enqueue(ConvertOperatorToToken(character));
             }
 
             return result;
+        }
+
+
+
+        Token ConvertOperatorToToken(Char character)
+        {
+            TokenType type = TokenType.Number;
+            switch (character)
+            {
+                case '+':
+                    type = TokenType.Add;
+                    break;
+                case '-':
+                    type = TokenType.Subtract;
+                    break;
+                case '/':
+                    type = TokenType.Divide;
+                    break;
+                case '*':
+                    type = TokenType.Multiply;
+                    break;
+                case '(':
+                    type = TokenType.LeftBracket;
+                    break;
+                case ')':
+                    type = TokenType.RightBracket;
+                    break;
+            }
+
+            return new Token(character.ToString(), type);
         }
 
         
