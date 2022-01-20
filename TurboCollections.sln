@@ -10,6 +10,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameStateHistory", "GameSta
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TurboCollectionsSpeedTests", "TurboCollectionsSpeedTests\TurboCollectionsSpeedTests.csproj", "{FDCAFC34-D65C-4478-B77C-867DB82ACFD2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShuntingYardAlgorithm", "ShuntingYardAlgorithm\ShuntingYardAlgorithm.csproj", "{5400F342-CDFE-448F-8D6A-78FD890CA63D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -36,5 +38,9 @@ Global
 		{FDCAFC34-D65C-4478-B77C-867DB82ACFD2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FDCAFC34-D65C-4478-B77C-867DB82ACFD2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FDCAFC34-D65C-4478-B77C-867DB82ACFD2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5400F342-CDFE-448F-8D6A-78FD890CA63D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5400F342-CDFE-448F-8D6A-78FD890CA63D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5400F342-CDFE-448F-8D6A-78FD890CA63D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5400F342-CDFE-448F-8D6A-78FD890CA63D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

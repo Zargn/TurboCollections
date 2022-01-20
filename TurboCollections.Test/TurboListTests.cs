@@ -225,16 +225,23 @@ namespace TurboCollections.Test
         [Test] public void GetEnumeratorWorks()
         {
             var list = new TurboList<int>();
+            list.Add(1);
+            list.Add(2);
             list.Add(3);
-            list.Add(4);
-            list.Add(5);
             var resultNumber = 0;
             foreach (var VARIABLE in list)
             {
                 resultNumber = VARIABLE;
             }
+            
+            int i = 1;
+            foreach (var item in list)
+            {
+                Assert.AreEqual(i, item);
+                i++;
+            }
         
-            Assert.AreEqual(5, resultNumber);
+            // Assert.AreEqual(5, resultNumber);
         }
     }
 }
