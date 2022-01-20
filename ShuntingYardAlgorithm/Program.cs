@@ -38,8 +38,8 @@ namespace ShuntingYardAlgorithm
         Subtract = 2,
         Divide = 3,
         Multiply = 4,
-        LeftBracket,
-        RightBracket
+        LeftBracket = 5,
+        RightBracket = 6
     }
 
     // public struct MathOperation
@@ -94,14 +94,46 @@ namespace ShuntingYardAlgorithm
 
         public TurboQueue<Token> ConvertFromTokenQueue(TurboQueue<Token> tokenQueue)
         {
+            TurboQueue<Token> result = new();
+            TurboStack<Token> stack = new();
+
             while (tokenQueue.Count != 0)
             {
                 var currentToken = tokenQueue.Dequeue();
-                
+                if (currentToken.Type == TokenType.Number)
+                    result.Enqueue(currentToken);
+
+                if (currentToken.Type is >= TokenType.Add and <= TokenType.Multiply)
+                {
+                    while (stack.Peek().Type > currentToken.Type)
+                    {
+                        result.Enqueue(stack.Pop());
+                    }
+                    stack.Push(currentToken);
+                }
+
+                if (currentToken.Type is TokenType.LeftBracket)
+                    stack.Push(currentToken);
+
+                if (currentToken.Type is TokenType.RightBracket)
+                {
+                    // TODO: This could create a error if the user inputs a ) without a ( before it.
+                    while (stack.Peek().Type != TokenType.LeftBracket) 
+                    {
+                        result.Enqueue(stack.Pop());
+                    }
+
+                    stack.Pop();
+                }
+            }
+
+            while (stack.Count != 0)
+            {
+                result.Enqueue(stack.Pop());
             }
 
             // TODO: TEMPORARY
-            return new TurboQueue<Token>();
+            return result;
         }
 
 
@@ -141,6 +173,11 @@ namespace ShuntingYardAlgorithm
 
 
 
+        /// <summary>
+        /// Converts a operator char into a Token containing the type and actual operator.
+        /// </summary>
+        /// <param name="character"></param>
+        /// <returns></returns>
         Token ConvertOperatorToToken(Char character)
         {
             TokenType type = TokenType.Number;
