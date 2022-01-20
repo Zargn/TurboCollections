@@ -109,8 +109,9 @@ namespace ShuntingYardAlgorithm
                 {
                     while (stack.Count != 0)
                     {
-                        if (stack.Peek().Type > currentToken.Type)
+                        if (stack.Peek().Type > currentToken.Type && stack.Peek().Type is >= TokenType.Add and <= TokenType.Multiply)
                         {
+                            Console.WriteLine($"moving {stack.Peek().Text} to queue.");
                             result.Enqueue(stack.Pop());
                         }
                         else
