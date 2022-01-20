@@ -33,7 +33,7 @@ namespace ShuntingYardAlgorithm
 
     public enum TokenType
     {
-        Number,
+        Number = 0,
         Add = 1,
         Subtract = 2,
         Divide = 3,
@@ -100,29 +100,48 @@ namespace ShuntingYardAlgorithm
             while (tokenQueue.Count != 0)
             {
                 var currentToken = tokenQueue.Dequeue();
+                Console.WriteLine($"Token: text:{currentToken.Text} type:{currentToken.Type}");
+                
                 if (currentToken.Type == TokenType.Number)
                     result.Enqueue(currentToken);
 
                 if (currentToken.Type is >= TokenType.Add and <= TokenType.Multiply)
                 {
-                    while (stack.Peek().Type > currentToken.Type)
+                    while (stack.Count != 0)
                     {
-                        result.Enqueue(stack.Pop());
+                        if (stack.Peek().Type > currentToken.Type)
+                        {
+                            result.Enqueue(stack.Pop());
+                        }
+                        else
+                            break;
                     }
+
+                    Console.WriteLine($"Adding {currentToken.Text} to stack");
                     stack.Push(currentToken);
                 }
 
                 if (currentToken.Type is TokenType.LeftBracket)
+                {
                     stack.Push(currentToken);
+                    Console.WriteLine($"Pushing {currentToken.Text} to stack");
+                }
 
                 if (currentToken.Type is TokenType.RightBracket)
                 {
                     // TODO: This could create a error if the user inputs a ) without a ( before it.
-                    while (stack.Peek().Type != TokenType.LeftBracket) 
+                    while (stack.Count != 0)
                     {
+                        if (stack.Peek().Type == TokenType.LeftBracket)
+                        {
+                            break;
+                        }
+
+                        Console.WriteLine($"moving {stack.Peek().Text} to queue.");
                         result.Enqueue(stack.Pop());
                     }
-
+                    
+                    Console.WriteLine($"Popping: {stack.Peek().Text}");
                     stack.Pop();
                 }
             }
