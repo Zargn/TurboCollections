@@ -121,29 +121,63 @@ namespace TurboCollections
 
         // --------------- optional ---------------
         // gets the iterator for this collection. Used by IEnumerable<T>-Interface to support foreach.
-        public IEnumerator<T> GetEnumerator()
+
+        public Enumerator GetEnumerator()
         {
-            T[] result = new T[Count];
-            int resetToZeroOffset = 0;
-            for (int i = 0; i < Count; i++)
-            {
-                if (i + startIndexOffset == items.Length)
-                    resetToZeroOffset = items.Length * -1;
-                result[i] = items[i + startIndexOffset + resetToZeroOffset];
-            }
-
-            IEnumerable<T> enumerable = result;
-            foreach (var VARIABLE in result)
-            {
-                Console.WriteLine(VARIABLE);
-            }
-
-            return enumerable.GetEnumerator();
+            return new Enumerator(items, Count, startIndexOffset);
+        }
+        
+        IEnumerator<T> IEnumerable<T>.GetEnumerator()
+        {
+            return GetEnumerator();
         }
 
         IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();
+        }
+
+        public struct Enumerator : IEnumerator<T>
+        {
+            private readonly T[] items;
+            private readonly int count;
+            private readonly int startPositionOffset;
+            private int backToStartOfArrayOffset;
+            private int index;
+
+            public Enumerator(T[] items, int count, int startPositionOffset)
+            {
+                this.items = items;
+                this.count = count;
+                this.startPositionOffset = startPositionOffset;
+                this.backToStartOfArrayOffset = 0;
+                this.index = -1;
+            }
+            
+            public bool MoveNext()
+            {
+                if (index >= count)
+                    return false;
+                index++;
+                if (index + startPositionOffset + backToStartOfArrayOffset >= items.Length)
+                    backToStartOfArrayOffset = items.Length * -1;
+                return index < count;
+            }
+
+            public void Reset()
+            {
+                index = -1;
+                backToStartOfArrayOffset = 0;
+            }
+
+            public T Current => items[index + startPositionOffset + backToStartOfArrayOffset];
+
+            object IEnumerator.Current => Current;
+
+            public void Dispose()
+            {
+                Reset();
+            }
         }
     }
 }

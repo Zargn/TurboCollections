@@ -125,29 +125,8 @@ namespace TurboCollections
                 Count++;
             }
         }
-        
-        
-        
-        // // gets the iterator for this collection. Used by IEnumerator to support foreach.
-        public IEnumerator<T> GetEnumerator()
-        {
-            T[] result = new T[Count];
-            for (int i = 0; i < Count; i++)
-            {
-                result[i] = items[i];
-            }
-
-            IEnumerable<T> enumerable = result;
-            return enumerable.GetEnumerator();
-        }
 
 
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
-        }
-        
-        
 
         private void ReSizeToTarget(int targetLenght)
         {
@@ -162,13 +141,55 @@ namespace TurboCollections
 
             var result = new T[items.Length + sizeToAdd];
             for (int i = 0; i < Count; i++)
-            {
+            {       
                 result[i] = items[i];
             }
 
             items = result;
         }
+        
+        
+        
+        
+        
+        public Enumerator GetEnumerator()
+        {
+            return new Enumerator(items, Count);
+        }
 
+        IEnumerator<T> IEnumerable<T>.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
+        
+        
+        
+        // // gets the iterator for this collection. Used by IEnumerator to support foreach.
+        // public IEnumerator<T> GetEnumerator()
+        // {
+        //     T[] result = new T[Count];
+        //     for (int i = 0; i < Count; i++)
+        //     {
+        //         result[i] = items[i];
+        //     }
+        //
+        //     IEnumerable<T> enumerable = result;
+        //     return enumerable.GetEnumerator();
+        // }
+        //
+        //
+        // IEnumerator IEnumerable.GetEnumerator()
+        // {
+        //     return GetEnumerator();
+        // }
+        
+
+        
         public struct Enumerator : IEnumerator<T>
         {
             private readonly T[] items;
@@ -182,20 +203,42 @@ namespace TurboCollections
                 this.index = -1;
             }
 
+            
+            // Advances the enumerator to the next element of the enumeration and
+            // returns a boolean indicating whether an element is available. Upon
+            // creation, an enumerator is conceptually positioned before the first
+            // element of the enumeration, and the first call to MoveNext
+            // brings the first element of the enumeration into view.
             public bool MoveNext()
             {
                 if (index >= count)
                     return false;
                 return ++index < count;
             }
+            
+            
 
+            // Returns the current element of the enumeration. The returned value is
+            // undefined before the first call to MoveNext and following a
+            // call to MoveNext that returned false. Multiple calls to
+            // GetCurrent with no intervening calls to MoveNext
+            // will return the same object.
+            public T Current => items[index];
+            
+            
+            
+            // Resets the enumerator to the beginning of the enumeration, starting over.
+            // The preferred behavior for Reset is to return the exact same enumeration.
+            // This means if you modify the underlying collection then call Reset, your
+            // IEnumerator will be invalid, just as it would have been if you had called
+            // MoveNext or Current.
             public void Reset()
             {
                 index = -1;
             }
 
-            public T Current => items[index];
-
+            
+            
             object IEnumerator.Current => Current;
 
             public void Dispose()
