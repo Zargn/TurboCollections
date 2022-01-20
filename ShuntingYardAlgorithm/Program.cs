@@ -66,7 +66,11 @@ namespace ShuntingYardAlgorithm
 
         public TurboQueue<string> ConvertFromTokenQueue(TurboQueue<string> tokenQueue)
         {
-            
+            while (tokenQueue.Count != 0)
+            {
+                var currentToken = tokenQueue.Dequeue();
+                
+            }
             
             
             
@@ -74,6 +78,31 @@ namespace ShuntingYardAlgorithm
             return new TurboQueue<string>();
         }
 
+
+        public struct Token
+        {
+            public Token(string text, TokenType type)
+            {
+                Text = text;
+                Type = type;
+            }
+
+            public string Text;
+            public TokenType Type;
+        }
+
+
+        public enum TokenType
+        {
+            Number,
+            Add,
+            Subtract,
+            Divide,
+            Multiply,
+            LeftBracket,
+            RightBracket
+        }
+        
 
 
         /// <summary>
