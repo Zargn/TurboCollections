@@ -6,20 +6,23 @@ namespace TurboCollections
     {
         private T[] items = new T[4];
 
+        
+        
+        /// <summary>
+        /// Returns the current amount of elements in this list.
+        /// </summary>
         public int Count
         {
             get;
             private set;
         }
-        
 
 
-        // returns the current amount of items contained in the list.
-        public int CountOLD => items.Length;
 
-        
-        
-        // adds one item to the end of the list.
+        /// <summary>
+        /// Add one element at the end of the list.
+        /// </summary>
+        /// <param name="item">element to add</param>
         public void Add(T item)
         {
             ReSizeToTarget(Count + 1);
@@ -28,8 +31,13 @@ namespace TurboCollections
         }
 
         
-        
-        // gets the item at the specified index. If the index is outside the correct range, an exception is thrown.
+
+        /// <summary>
+        /// Get the element at the provided index.
+        /// </summary>
+        /// <param name="index">Index of element to return</param>
+        /// <returns></returns>
+        /// <exception cref="Exception">Throws a exception if the index provided is outside the bounds of the list</exception>
         public T Get(int index)
         {
             if (index > Count || index < 0)
@@ -40,7 +48,12 @@ namespace TurboCollections
 
         
         
-        // replaces the item at the specified index. If the index is outside the correct range, an exception is thrown.
+        /// <summary>
+        /// Replace the element at selected index with another.
+        /// </summary>
+        /// <param name="index">Target index</param>
+        /// <param name="value">Element to set at the index</param>
+        /// <exception cref="Exception">Throws a exception if the index provided is outside the bounds of the list</exception>
         public void Set(int index, T value)
         {
             if (index > Count || index < 0)
@@ -51,7 +64,9 @@ namespace TurboCollections
         
         
         
-        // removes all items from the list.
+        /// <summary>
+        /// Removes all elements from the list.
+        /// </summary>
         public void Clear()
         {
             items = new T[4];
@@ -60,7 +75,11 @@ namespace TurboCollections
 
         
         
-        // removes one item from the list. If the 4th item is removed, then the 5th item becomes the 4th, the 6th becomes the 5th and so on.
+        /// <summary>
+        /// Removes the element at provided index.
+        /// </summary>
+        /// <param name="index">Selected index.</param>
+        /// <exception cref="Exception">Throws a exception if the index provided is outside the bounds of the list</exception>
         public void RemoveAt(int index)
         {
             if (index > Count || index < 0)
@@ -75,16 +94,24 @@ namespace TurboCollections
         }
 
         
-        
-        // returns true, if the given item can be found in the list, else false.
+
+        /// <summary>
+        /// Checks if the element provided exists inside the list.
+        /// </summary>
+        /// <param name="searchItem">Element to look for</param>
+        /// <returns>Boolean based on if the element could be found or not</returns>
         public bool Contains(T searchItem)
         {
             return IndexOf(searchItem) != -1;
         }
         
         
-        
-        // returns the index of the given item if it is in the list, else -1.
+
+        /// <summary>
+        /// Checks if the element provided exists in the list, and returns it's index if found.
+        /// </summary>
+        /// <param name="searchItem">Element to look for</param>
+        /// <returns>int based on the index of the element found, or -1 if it was not found</returns>
         public int IndexOf(T searchItem)
         {
             for (int i = 0; i < Count; i++)
@@ -99,8 +126,12 @@ namespace TurboCollections
         }
         
         
-        
-        // removes the specified item from the list, if it can be found.
+
+        /// <summary>
+        /// Removes the provided element from the list if it can be found.
+        /// </summary>
+        /// <param name="item">Element to look for</param>
+        /// <returns>Boolean representing if it was successful</returns>
         public bool Remove(T item)
         {
             if (IndexOf(item) != -1)
@@ -114,7 +145,10 @@ namespace TurboCollections
         
         
         
-        // adds multiple items to this list at once.
+        /// <summary>
+        /// Adds multiple elements to the list.
+        /// </summary>
+        /// <param name="itemsToAdd">Array of elements to add</param>
         public void AddRange(IEnumerable<T> itemsToAdd)
         {
             ReSizeToTarget(Count + itemsToAdd.Count());
@@ -128,6 +162,10 @@ namespace TurboCollections
 
 
 
+        /// <summary>
+        /// Resizes the array to fit within the bounds specified in the arguments.
+        /// </summary>
+        /// <param name="targetLenght">The needed length for the internal array</param>
         private void ReSizeToTarget(int targetLenght)
         {
             if (targetLenght <= items.Length)
@@ -150,8 +188,6 @@ namespace TurboCollections
         
         
         
-        
-        
         public Enumerator GetEnumerator()
         {
             return new Enumerator(items, Count);
@@ -166,30 +202,9 @@ namespace TurboCollections
         {
             return GetEnumerator();
         }
-        
-        
-        
-        // // gets the iterator for this collection. Used by IEnumerator to support foreach.
-        // public IEnumerator<T> GetEnumerator()
-        // {
-        //     T[] result = new T[Count];
-        //     for (int i = 0; i < Count; i++)
-        //     {
-        //         result[i] = items[i];
-        //     }
-        //
-        //     IEnumerable<T> enumerable = result;
-        //     return enumerable.GetEnumerator();
-        // }
-        //
-        //
-        // IEnumerator IEnumerable.GetEnumerator()
-        // {
-        //     return GetEnumerator();
-        // }
-        
 
-        
+
+
         public struct Enumerator : IEnumerator<T>
         {
             private readonly T[] items;
