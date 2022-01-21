@@ -34,7 +34,7 @@ namespace ShuntingYardAlgorithm
             while (tokenQueue.Count != 0)
             {
                 var currentToken = tokenQueue.Dequeue();
-                Console.WriteLine($"Token: text:{currentToken.Value} type:{currentToken.Type}");
+                // Console.WriteLine($"Token: text:{currentToken.Value} type:{currentToken.Type}");
                 
                 if (currentToken.Type == TokenType.Number)
                     result.Enqueue(currentToken);
@@ -47,7 +47,7 @@ namespace ShuntingYardAlgorithm
                 if (currentToken.Type is TokenType.LeftBracket)
                 {
                     stack.Push(currentToken);
-                    Console.WriteLine($"Pushing {currentToken.Value} to stack");
+                    // Console.WriteLine($"Pushing {currentToken.Value} to stack");
                 }
 
                 if (currentToken.Type is TokenType.RightBracket)
@@ -79,14 +79,14 @@ namespace ShuntingYardAlgorithm
             {
                 if (stack.Peek().Type > currentToken.Type && stack.Peek().Type is >= TokenType.Add and <= TokenType.Multiply)
                 {
-                    Console.WriteLine($"moving {stack.Peek().Value} to queue.");
+                    // Console.WriteLine($"moving {stack.Peek().Value} to queue.");
                     result.Enqueue(stack.Pop());
                 }
                 else
                     break;
             }
 
-            Console.WriteLine($"Adding {currentToken.Value} to stack");
+            // Console.WriteLine($"Adding {currentToken.Value} to stack");
             stack.Push(currentToken);
         }
 
@@ -107,11 +107,11 @@ namespace ShuntingYardAlgorithm
                     break;
                 }
 
-                Console.WriteLine($"moving {stack.Peek().Value} to queue.");
+                // Console.WriteLine($"moving {stack.Peek().Value} to queue.");
                 result.Enqueue(stack.Pop());
             }
 
-            Console.WriteLine($"Popping: {stack.Peek().Value}");
+            // Console.WriteLine($"Popping: {stack.Peek().Value}");
             stack.Pop();
         }
 
@@ -145,6 +145,11 @@ namespace ShuntingYardAlgorithm
                     return new TurboQueue<Token>();
                 }
                 result.Enqueue(ConvertOperatorToToken(character));
+            }
+            if (number != null)
+            {
+                result.Enqueue(new Token(Convert.ToDecimal(number), TokenType.Number));
+                number = null;
             }
 
             return result;

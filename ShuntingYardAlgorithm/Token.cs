@@ -13,6 +13,11 @@ namespace ShuntingYardAlgorithm
 
         public readonly decimal Value;
         public readonly TokenType Type;
+        
+        public override string ToString()
+        {
+            return $"Value: {Value}, Type: {Type}";
+        }
     }
 
 

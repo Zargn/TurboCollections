@@ -6,15 +6,30 @@ namespace ShuntingYardAlgorithm
     {
         private static void Main()
         {
-            ShuntingYardAlgorithm shuntingYardAlgorithm = new();
-
-            TurboQueue<Token> result = new TurboQueue<Token>();
-            while (result.Count == 0)
+            while (true)
             {
-                // TODO: Add proper method for input here.
-                result = shuntingYardAlgorithm.ConvertToReversePolish("I AM NOT MATH");
-                
-                // TODO: Add call to math calculation method here.
+                ShuntingYardAlgorithm shuntingYardAlgorithm = new();
+
+                TurboQueue<Token> TokenQueue = new TurboQueue<Token>();
+
+                while (TokenQueue.Count == 0)
+                {
+                    Console.WriteLine("Please input a math formula.");
+                    Console.WriteLine("Allowed characters are 0-9, +, -, /, *, (, )");
+
+                    TokenQueue = shuntingYardAlgorithm.ConvertToReversePolish(Console.ReadLine());
+                    if (TokenQueue.Count == 0)
+                        Console.WriteLine("UnPermitted characters found! Please try again.");
+                }
+
+                decimal result = ReversePolishCalculator.CalculateFromQueue(TokenQueue);
+                Console.WriteLine($"Result of expression is: decimal:{result}");
+
+
+                Console.WriteLine("Write quit to stop the program, or press enter to start again.");
+                if (Console.ReadLine() is "quit" or "Quit")
+                    break;
+                Console.Clear();
             }
         }
     }
