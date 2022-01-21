@@ -23,7 +23,25 @@ namespace ShuntingYardAlgorithm
     {
         public static decimal CalculateFromQueue(TurboQueue<Token> inputQueue)
         {
+            /*
+                While there are tokens in the input queue:
+                Dequeue a token
+                If token is a number
+                                Add it to the result stack
+                If token is a operator
+                                Pop the two top numbers in the stack and apply the operator to them.
+                                Push the result back to the stack.
+             */
+            
 
+            // TurboStack<int> result = new();
+            //
+            // while (inputQueue.Count != 0)
+            // {
+            //     var currentToken = inputQueue.Dequeue();
+            //     if (currentToken.Type == TokenType.Number)
+            //         result.Push(result);
+            // }
 
             return 0;
         }

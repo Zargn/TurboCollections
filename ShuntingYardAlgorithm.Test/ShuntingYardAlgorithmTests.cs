@@ -23,12 +23,20 @@ public class Tests
     {
         ShuntingYardAlgorithm shuntingYardAlgorithm = new();
         var result = shuntingYardAlgorithm.GatherTokens("5+32/(4*4)");
+        
 
-        string[] comparison = new string[] {"5", "+", "32", "/", "(", "4", "*", "4", ")"};
+        Token[] comparison = {
+            new(5, TokenType.Number), new(0, TokenType.Add), new(32, TokenType.Number),
+            new(0, TokenType.Divide), new(0, TokenType.LeftBracket), new(4, TokenType.Number),
+            new(0, TokenType.Multiply), new(4, TokenType.Number), new(0, TokenType.RightBracket)
+        };
+        
+        
+
         int index = 0;
         foreach (var VARIABLE in result)
         {
-            Assert.AreEqual(comparison[index], VARIABLE.Text);
+            Assert.AreEqual(comparison[index], VARIABLE);
             index++;
         }
     }
@@ -40,19 +48,31 @@ public class Tests
 
         var result = shuntingYardAlgorithm.ConvertToReversePolish("4+18/(9-3)");
 
-        string[] comparison = new string[] {"4", "18", "9", "3", "-", "/", "+"};
+        
+        // {"4", "18", "9", "3", "-", "/", "+"};
+        Token[] comparison = {
+            new(4, TokenType.Number), new(18, TokenType.Number), new(9, TokenType.Number),
+            new(3, TokenType.Number), new(0, TokenType.Subtract), new(0, TokenType.Divide),
+            new(0, TokenType.Add)
+        };
 
         foreach (var VARIABLE in result)
         {
-            Console.WriteLine(VARIABLE.Text);
+            Console.WriteLine(VARIABLE.Value);
         }
-        
-        int i = 0;
-        while (result.Count != 0)
+
+        int index = 0;
+        foreach (var token in result)
         {
-            Assert.AreEqual(comparison[i], result.Dequeue().Text);
-            i++;
+            Assert.AreEqual(comparison[index].Value, token.Value);
+            Assert.AreEqual(comparison[index].Type, token.Type);
+            index++;
         }
+        //
+        // for (int i = 0; result.Count != 0; i++)
+        // {
+        //     Assert.AreEqual(comparison[i], result.Dequeue());
+        // }
     }
     
     [Test]
@@ -60,7 +80,7 @@ public class Tests
     {
         ShuntingYardAlgorithm shuntingYardAlgorithm = new();
         var result = ReversePolishCalculator.CalculateFromQueue(shuntingYardAlgorithm.ConvertToReversePolish("(3+5)*(7-2)"));
-        Assert.AreEqual(40, result);
+        Assert.AreEqual(40m, result);
     }
     
     // [Test]

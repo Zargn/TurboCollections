@@ -5,13 +5,13 @@ namespace ShuntingYardAlgorithm
     /// </summary>
     public struct Token
     {
-        public Token(string text, TokenType type)
+        public Token(decimal value, TokenType type)
         {
-            Text = text;
+            Value = value;
             Type = type;
         }
 
-        public readonly string Text;
+        public readonly decimal Value;
         public readonly TokenType Type;
     }
 
