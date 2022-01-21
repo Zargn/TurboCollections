@@ -2,9 +2,9 @@ using TurboCollections;
 
 namespace ShuntingYardAlgorithm
 {
-    public class ShuntingYardAlgorithm
+    public static class ShuntingYardAlgorithm
     {
-        private readonly char[] validCharacters = {'+', '-', '*', '/', '(', ')'};
+        private static readonly char[] validCharacters = {'+', '-', '*', '/', '(', ')'};
         
         
         
@@ -13,7 +13,7 @@ namespace ShuntingYardAlgorithm
         /// </summary>
         /// <param name="input">string to process</param>
         /// <returns>Token queue in reverse polish format, or empty if the input was invalid.</returns>
-        public TurboQueue<Token> ConvertToReversePolish(string input)
+        public static TurboQueue<Token> ConvertToReversePolish(string input)
         {
             var tokenQueue = GatherTokens(input);
             return tokenQueue.Count == 0 ? new TurboQueue<Token>() : ConvertFromTokenQueue(tokenQueue);
@@ -26,7 +26,7 @@ namespace ShuntingYardAlgorithm
         /// </summary>
         /// <param name="tokenQueue">Queue of tokens to process.</param>
         /// <returns>Processed token queue in reverse polish format</returns>
-        public TurboQueue<Token> ConvertFromTokenQueue(TurboQueue<Token> tokenQueue)
+        public static TurboQueue<Token> ConvertFromTokenQueue(TurboQueue<Token> tokenQueue)
         {
             TurboQueue<Token> result = new();
             TurboStack<Token> stack = new();
@@ -122,7 +122,7 @@ namespace ShuntingYardAlgorithm
         /// </summary>
         /// <param name="input"></param>
         /// <returns>Returns a queue of tokens, or a empty queue if input is invalid.</returns>
-        public TurboQueue<Token> GatherTokens(string input)
+        public static TurboQueue<Token> GatherTokens(string input)
         {
             TurboQueue<Token> result = new();
 
@@ -162,7 +162,7 @@ namespace ShuntingYardAlgorithm
         /// </summary>
         /// <param name="character"></param>
         /// <returns></returns>
-        Token ConvertOperatorToToken(Char character)
+        private static Token ConvertOperatorToToken(Char character)
         {
             TokenType type = TokenType.Number;
             switch (character)
@@ -197,7 +197,7 @@ namespace ShuntingYardAlgorithm
         /// </summary>
         /// <param name="character">Character to check</param>
         /// <returns>Boolean representing if the character supplied is valid or not.</returns>
-        private bool CharIsValidCheck(char character)
+        private static bool CharIsValidCheck(char character)
         {
             foreach (var validCharacter in validCharacters)
             {

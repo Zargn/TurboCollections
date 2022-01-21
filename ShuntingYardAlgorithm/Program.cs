@@ -8,7 +8,7 @@ namespace ShuntingYardAlgorithm
         {
             while (true)
             {
-                ShuntingYardAlgorithm shuntingYardAlgorithm = new();
+                // ShuntingYardAlgorithm shuntingYardAlgorithm = new();
 
                 TurboQueue<Token> TokenQueue = new TurboQueue<Token>();
 
@@ -17,7 +17,7 @@ namespace ShuntingYardAlgorithm
                     Console.WriteLine("Please input a math formula.");
                     Console.WriteLine("Allowed characters are 0-9, +, -, /, *, (, )");
 
-                    TokenQueue = shuntingYardAlgorithm.ConvertToReversePolish(Console.ReadLine());
+                    TokenQueue = ShuntingYardAlgorithm.ConvertToReversePolish(Console.ReadLine());
                     if (TokenQueue.Count == 0)
                         Console.WriteLine("UnPermitted characters found! Please try again.");
                 }
