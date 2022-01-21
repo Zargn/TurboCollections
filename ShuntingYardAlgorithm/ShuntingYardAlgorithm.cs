@@ -4,7 +4,7 @@ namespace ShuntingYardAlgorithm
 {
     public static class ShuntingYardAlgorithm
     {
-        private static readonly char[] validCharacters = {'+', '-', '*', '/', '(', ')'};
+        private static readonly char[] ValidCharacters = {'+', '-', '*', '/', '(', ')'};
         
         
         
@@ -99,7 +99,7 @@ namespace ShuntingYardAlgorithm
         /// <param name="result">Current result queue</param>
         private static void ProcessRightBracket(TurboStack<Token> stack, TurboQueue<Token> result)
         {
-            // TODO: This could create a error if the user inputs a ) without a ( before it.
+            // TODO: This creates a StackIsEmpty exception if the user inputs a ) without a ( before it.
             while (stack.Count != 0)
             {
                 if (stack.Peek().Type == TokenType.LeftBracket)
@@ -149,7 +149,6 @@ namespace ShuntingYardAlgorithm
             if (number != null)
             {
                 result.Enqueue(new Token(Convert.ToDecimal(number), TokenType.Number));
-                number = null;
             }
 
             return result;
@@ -162,9 +161,9 @@ namespace ShuntingYardAlgorithm
         /// </summary>
         /// <param name="character"></param>
         /// <returns></returns>
-        private static Token ConvertOperatorToToken(Char character)
+        private static Token ConvertOperatorToToken(char character)
         {
-            TokenType type = TokenType.Number;
+            var type = TokenType.Number;
             switch (character)
             {
                 case '+':
@@ -199,7 +198,7 @@ namespace ShuntingYardAlgorithm
         /// <returns>Boolean representing if the character supplied is valid or not.</returns>
         private static bool CharIsValidCheck(char character)
         {
-            foreach (var validCharacter in validCharacters)
+            foreach (var validCharacter in ValidCharacters)
             {
                 if (character == validCharacter)
                 {

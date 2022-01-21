@@ -8,21 +8,19 @@ namespace ShuntingYardAlgorithm
         {
             while (true)
             {
-                // ShuntingYardAlgorithm shuntingYardAlgorithm = new();
+                TurboQueue<Token> tokenQueue = new TurboQueue<Token>();
 
-                TurboQueue<Token> TokenQueue = new TurboQueue<Token>();
-
-                while (TokenQueue.Count == 0)
+                while (tokenQueue.Count == 0)
                 {
                     Console.WriteLine("Please input a math formula.");
                     Console.WriteLine("Allowed characters are 0-9, +, -, /, *, (, )");
 
-                    TokenQueue = ShuntingYardAlgorithm.ConvertToReversePolish(Console.ReadLine());
-                    if (TokenQueue.Count == 0)
+                    tokenQueue = ShuntingYardAlgorithm.ConvertToReversePolish(Console.ReadLine());
+                    if (tokenQueue.Count == 0)
                         Console.WriteLine("UnPermitted characters found! Please try again.");
                 }
 
-                decimal result = ReversePolishCalculator.CalculateFromQueue(TokenQueue);
+                decimal result = ReversePolishCalculator.CalculateFromQueue(tokenQueue);
                 Console.WriteLine($"Result of expression is: decimal:{result}");
 
 
