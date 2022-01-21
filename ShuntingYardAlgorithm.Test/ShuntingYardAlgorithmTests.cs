@@ -54,6 +54,15 @@ public class Tests
             i++;
         }
     }
+    
+    [Test]
+    public void FullCalculationReturnsCorrectValue()
+    {
+        ShuntingYardAlgorithm shuntingYardAlgorithm = new();
+        var result = ReversePolishCalculator.CalculateFromQueue(shuntingYardAlgorithm.ConvertToReversePolish("(3+5)*(7-2)"));
+        Assert.AreEqual(40, result);
+    }
+    
     // [Test]
     // public void ()
     // {

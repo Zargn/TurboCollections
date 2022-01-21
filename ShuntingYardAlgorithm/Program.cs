@@ -18,5 +18,15 @@ namespace ShuntingYardAlgorithm
             }
         }
     }
+
+    public static class ReversePolishCalculator
+    {
+        public static decimal CalculateFromQueue(TurboQueue<Token> inputQueue)
+        {
+
+
+            return 0;
+        }
+    }
 }
 
