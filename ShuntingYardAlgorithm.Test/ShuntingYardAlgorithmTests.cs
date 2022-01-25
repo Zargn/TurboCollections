@@ -1,21 +1,21 @@
 using NUnit.Framework;
+using ShuntingYardAlgorithm;
 
-namespace ShuntingYardAlgorithm.Test;
 
 public class Tests
 {
     [Test]
     public void GatherTokensReturnsFalseByIncorrectInput()
     {
-        var result = ShuntingYardAlgorithm.GatherTokens("Hello there i am not math and should return a 0 lenght queue.");
+        var result = ShuntingYardAlgorithm.ShuntingYardAlgorithm.GatherTokens("Hello there i am not math and should return a 0 lenght queue.");
         Assert.AreEqual(0, result.Count);
     }
     
     [Test]
     public void GatherTokensReturnsCorrectQueue()
     {
-        var result = ShuntingYardAlgorithm.GatherTokens("5+32/(4*4)");
-        
+        var result = ShuntingYardAlgorithm.ShuntingYardAlgorithm.GatherTokens("5+32/(4*4)");
+
 
         Token[] comparison = {
             new(5, TokenType.Number), new(0, TokenType.Add), new(32, TokenType.Number),
@@ -36,7 +36,7 @@ public class Tests
     [Test]
     public void ConvertToReversePolishReturnsCorrectQueue()
     {
-        var result = ShuntingYardAlgorithm.ConvertToReversePolish("4+18/(9-3)");
+        var result = ShuntingYardAlgorithm.ShuntingYardAlgorithm.ConvertToReversePolish("4+18/(9-3)");
         
         Token[] comparison = {
             new(4, TokenType.Number), new(18, TokenType.Number), new(9, TokenType.Number),
@@ -56,7 +56,7 @@ public class Tests
     [Test]
     public void FullCalculationReturnsCorrectValue()
     {
-        var result = ReversePolishCalculator.CalculateFromQueue(ShuntingYardAlgorithm.ConvertToReversePolish("(3+5)*(7-2)"));
+        var result = ReversePolishCalculator.CalculateFromQueue(ShuntingYardAlgorithm.ShuntingYardAlgorithm.ConvertToReversePolish("(3+5)*(7-2)"));
         Assert.AreEqual(40m, result);
     }
 }
