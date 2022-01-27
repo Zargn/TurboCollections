@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using NUnit.Framework;
 
@@ -242,6 +243,22 @@ namespace TurboCollections.Test
             }
         
             // Assert.AreEqual(5, resultNumber);
+        }
+
+        [Test]
+        public void BubbleSortTest()
+        {
+            var list = new TurboList<int>();
+            for (int i = 0; i < 100; i++)
+            {
+                list.Add(100-i);
+            }
+
+            list = TurboSort.BubbleSort(list);
+            
+            Assert.AreEqual(11, list.Get(10));
+            Assert.AreEqual(1, list.Get(0));
+            Assert.AreEqual(100, list.Get(99));
         }
     }
 }
