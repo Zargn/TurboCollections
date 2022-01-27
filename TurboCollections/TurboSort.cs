@@ -2,36 +2,11 @@ namespace TurboCollections
 {
     public static class TurboSort
     {
-        // 1. Add a BubbleSort(TurboList<int>)-Method that sorts the List using Bubblesort.
-        // procedure bubbleSort( list : array of items )
-        //
-        // loop = list.count;
-        //
-        // for i = 0 to loop-1 do:
-        // swapped = false
-		      //
-        // for j = 0 to loop-1 do:
-        //
-        // /* compare the adjacent elements */   
-        // if list[j] > list[j+1] then
-        //     /* swap them */
-        //     swap( list[j], list[j+1] )		 
-        // swapped = true
-        // end if
-        //  
-        // end for
-        //
-        // /*if no number was swapped that means 
-        // array is sorted now, break the loop.*/
-        //
-        // if(not swapped) then
-        // break
-        // end if
-        //
-        // end for
-        //
-        // end procedure return list
-
+        /// <summary>
+        /// Bad example of a BubbleSort algorithm. Takes a list of ints and sorts it to be lowest to highest.
+        /// </summary>
+        /// <param name="list">list to sort</param>
+        /// <returns>sorted list</returns>
         public static TurboList<int> BubbleSort(TurboList<int> list)
         {
             bool swapPerformed = true;
@@ -52,12 +27,15 @@ namespace TurboCollections
 
             return list;
         }
-
-
-
-
-
-
+        
+        
+        
+        
+        
+        
+        
+        
+        
         // 2. Add a QuickSort(TurboList<int>)-Method that sorts the List using Quicksort.
         
         // 3. Bonus: Add a SelectionSort(TurboList<int>)-Method that sorts the List using SelectionSort.
