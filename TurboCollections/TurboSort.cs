@@ -27,15 +27,18 @@ namespace TurboCollections
 
             return list;
         }
-        
-        
-        
-        
-        
-        
-        
-        
-        
+
+
+
+        public static TurboList<int> QuickSort(TurboList<int> list)
+        {
+            return list;
+        }
+
+
+
+
+
         // 2. Add a QuickSort(TurboList<int>)-Method that sorts the List using Quicksort.
         
         // 3. Bonus: Add a SelectionSort(TurboList<int>)-Method that sorts the List using SelectionSort.

@@ -260,5 +260,21 @@ namespace TurboCollections.Test
             Assert.AreEqual(1, list.Get(0));
             Assert.AreEqual(100, list.Get(99));
         }
+
+        [Test]
+        public void QuickSortTest()
+        {
+            var list = new TurboList<int>();
+            for (int i = 0; i < 100; i++)
+            {
+                list.Add(100 - i);
+            }
+            
+            // list = 
+            
+            Assert.AreEqual(11, list.Get(10));
+            Assert.AreEqual(1, list.Get(0));
+            Assert.AreEqual(100, list.Get(99));
+        }
     }
 }
