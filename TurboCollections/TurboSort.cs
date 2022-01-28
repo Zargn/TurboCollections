@@ -152,8 +152,28 @@ namespace TurboCollections
             
             Console.WriteLine($"{id} Updating result list");
 
+            Console.WriteLine("Will add together:");
+            Console.WriteLine("low list:");
+            foreach (var VARIABLE in low)
+            {
+                Console.WriteLine(VARIABLE);
+            }
+
+            Console.WriteLine("pivot point:");
+            Console.WriteLine(pivotPoint);
+
+            Console.WriteLine("high list:");
+            foreach (var VARIABLE in high)
+            {
+                Console.WriteLine(VARIABLE);
+            }
+
+            Console.WriteLine();
+            
+            
             list.Clear();
             list.AddRange(low);
+            // Console.WriteLine("Added " + pivotPoint);
             list.Add(pivotPoint);
             list.AddRange(high);
             

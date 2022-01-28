@@ -64,7 +64,7 @@ namespace TurboCollections.Test
             
         // var list = new TurboList<int>();
         // Assert.Zero(list.Count);
-
+        
         [Test, TestCase(1), TestCase(4), TestCase(42)]
         public void AddingAnElementIncreases(int numberOfElements)
         {
@@ -204,6 +204,7 @@ namespace TurboCollections.Test
         public void AddRangeAddsItemsAtCorrectPlaces()
         {
             var list = new TurboList<int>();
+            var list2 = new TurboList<int>();
             // int[] input = new[] {3, 4, 5};
             // list.Add(3);
             // list.Add(4);
@@ -212,13 +213,19 @@ namespace TurboCollections.Test
             // Assert.AreEqual(3, list.Get(3));
             
             
-            for (int i = 0; i < 100; i++)
+            for (int i = 0; i < 50; i++)
             {
                 list.Add(i);
             }
+            for (int i = 50; i < 100; i++)
+            {
+                list2.Add(i);
+            }
+            
 
             TurboList<int> result = new();
             result.AddRange(list);
+            result.AddRange(list2);
 
             for (int i = 0; i < result.Count; i++)
             {

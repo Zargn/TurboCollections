@@ -28,9 +28,9 @@ namespace TurboCollections
         /// <param name="item">element to add</param>
         public void Add(T item)
         {
+            ReSizeToTarget(Count + 1);
+            items[Count] = item;
             Count++;
-            ReSizeToTarget(Count);
-            items[Count - 1] = item;
         }
         
         
@@ -181,7 +181,7 @@ namespace TurboCollections
             }
 
             var result = new T[items.Length + sizeToAdd];
-            for (int i = 0; i < Count - 1; i++)
+            for (int i = 0; i < Count; i++)
             {       
                 result[i] = items[i];
             }
