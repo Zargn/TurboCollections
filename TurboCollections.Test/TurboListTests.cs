@@ -204,12 +204,26 @@ namespace TurboCollections.Test
         public void AddRangeAddsItemsAtCorrectPlaces()
         {
             var list = new TurboList<int>();
-            int[] input = new[] {3, 4, 5};
-            list.Add(3);
-            list.Add(4);
-            list.Add(5);
-            list.AddRange(input);
-            Assert.AreEqual(3, list.Get(3));
+            // int[] input = new[] {3, 4, 5};
+            // list.Add(3);
+            // list.Add(4);
+            // list.Add(5);
+            // list.AddRange(input);
+            // Assert.AreEqual(3, list.Get(3));
+            
+            
+            for (int i = 0; i < 100; i++)
+            {
+                list.Add(i);
+            }
+
+            TurboList<int> result = new();
+            result.AddRange(list);
+
+            for (int i = 0; i < result.Count; i++)
+            {
+                Assert.AreEqual(i, result.Get(i));
+            }
         }
         
         [Test]
@@ -265,16 +279,40 @@ namespace TurboCollections.Test
         public void QuickSortTest()
         {
             var list = new TurboList<int>();
-            for (int i = 0; i < 100; i++)
+            for (int i = 0; i < 10; i++)
             {
-                list.Add(100 - i);
+                list.Add(10 - i);
             }
             
-            // list = 
+            // list.Add(7);
+            // list.Add(2);
+            // list.Add(3);
+
+
+            Console.WriteLine($"Count before sort: {list.Count}");
+
+            list = TurboSort.QuickSort(list);
             
-            Assert.AreEqual(11, list.Get(10));
-            Assert.AreEqual(1, list.Get(0));
-            Assert.AreEqual(100, list.Get(99));
+            Console.WriteLine($"Count after sort: {list.Count}");
+            Console.WriteLine("----------------");
+            
+            // foreach (var VARIABLE in list)
+            // {
+            //     Console.WriteLine(VARIABLE);
+            // }
+
+            for (int i = 0; i < list.Count; i++)
+            {
+                Console.WriteLine(list.Get(i));
+            }
+
+            // Assert.AreEqual(11, list.Get(10));
+            // Assert.AreEqual(1, list.Get(0));
+            // Assert.AreEqual(100, list.Get(99));
+            for (int i = 0; i < list.Count; i++)
+            {
+                Assert.AreEqual(i+1, list.Get(i));
+            }
         }
     }
 }

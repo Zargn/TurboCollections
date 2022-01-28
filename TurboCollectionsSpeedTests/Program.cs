@@ -149,7 +149,23 @@ namespace TurboCollectionsSpeedTests
 
         void StackTester()
         {
+            var list = new TurboList<int>();
+            for (int i = 0; i < 10; i++)
+            {
+                list.Add(10 - i);
+            }
             
+            Console.WriteLine($"Count before sort: {list.Count}");
+
+            list = TurboSort.QuickSort(list);
+            
+            Console.WriteLine($"Count after sort: {list.Count}");
+            Console.WriteLine("----------------");
+            
+            for (int i = 0; i < list.Count; i++)
+            {
+                Console.WriteLine(list.Get(i));
+            }
         }
 
         void QueueTester()
