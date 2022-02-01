@@ -8,6 +8,7 @@ namespace TurboCollections
 
         public int Count { get; private set; }
 
+        
 
         /// <summary>
         /// Returns index of items if it can be found in the tree.
@@ -74,7 +75,7 @@ namespace TurboCollections
                 }
                 
                 if (searchIndex >= items.Length)
-                    EnsureSize(items.Length);
+                    EnsureSize(items.Length + 1);
                 
                 if (items[searchIndex].Equals(default(T)))
                 {
@@ -90,15 +91,57 @@ namespace TurboCollections
 
 
 
+        public bool Delete(T item)
+        {
+            var itemIndex = Search(item);
+
+            if (itemIndex == -1)
+                return false;
+
+            // Remove item:
+            /*
+             * if (itemindex * 2 + 1 > items.length)
+             *      Then node has no children. Remove it.
+             *
+             * Since we double the size of the array every resize we don't need to worry that itemindex * 2 + 2 is
+             * outside the limits of the array.
+             * int children;
+             * if (items[itemindex * 2 + 1] != default)
+             *      children ++
+             * if (items[itemindex * 2 + 2] != default)
+             *      children ++
+             *
+             * if (children == 0)
+             *      Node has no children. Remove it.
+             *
+             * if (children = 1)
+             *      replace node with child.
+             *
+             * if (children = 2)
+             *      go through the left child tree looking for the leaf furthest to the right.
+             */
+            
+            
+            // TODO instructions: 
+            
+            // If the Node has no children: Just remove it.
+
+            // If the Node has one child: Replace the node with the child node.
+            
+            // Else: Search either for the Maximum of the left sub-tree (go left and then always right until you find a
+            // leaf) or the Minimum of the right sub-tree (go right and then always left) and replace the node with the
+            // leaf you just found.
+        }
+        
+
+
+
         /// <summary>
         /// Ensure that the size of the internal array can fit all items.
         /// </summary>
-        /// <param name="sizeIncrease">total size increase</param>
-        private void EnsureSize(int sizeIncrease)
+        /// <param name="sizeIncrease">new size</param>
+        private void EnsureSize(int targetSize)
         {
-            Console.WriteLine("Ensure size!");
-            
-            var targetSize = items.Length + sizeIncrease;
             var currentSize = items.Length;
             
             if (currentSize > targetSize)

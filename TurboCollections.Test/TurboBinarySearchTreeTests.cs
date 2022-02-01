@@ -54,6 +54,23 @@ namespace TurboCollections.Test
                 Assert.AreEqual(i, tree.Search(input[i]));
             }
         }
+
+        [Test]
+        public void DeleteActuallyRemovesItem()
+        {
+            TurboBinarySearchTree<int> tree = new();
+
+            var input = GetUnOrderedArray();
+
+            foreach (var VARIABLE in input)
+            {
+                tree.Insert(VARIABLE);
+            }
+
+            tree.Insert(42);
+            Console.WriteLine(tree.Delete(42));
+            Assert.AreEqual(-1, tree.Search(42));
+        }
         
         
         [Test]
@@ -68,7 +85,7 @@ namespace TurboCollections.Test
                 tree.Insert(VARIABLE);
             }
             
-            
+            // TODO: Need a getenumerator or similar to finish this test.
         }
     }
 }
