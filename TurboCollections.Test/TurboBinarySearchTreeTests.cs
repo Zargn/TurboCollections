@@ -20,6 +20,20 @@ namespace TurboCollections.Test
             return new[] {1, 2, 4, 5, 6, 8, 10, 12, 14, 15, 16, 18};
         }
 
+        TurboBinarySearchTree<int> GetTree()
+        {
+            TurboBinarySearchTree<int> tree = new();
+
+            var input = GetUnOrderedArray();
+
+            foreach (var VARIABLE in input)
+            {
+                tree.Insert(VARIABLE);
+            }
+
+            return tree;
+        }
+
 
         [TestCase(1), TestCase(5), TestCase(22)]
         public void InsertIncreasesCount(int itemsToAdd)
@@ -58,18 +72,21 @@ namespace TurboCollections.Test
         [Test]
         public void DeleteActuallyRemovesItem()
         {
-            TurboBinarySearchTree<int> tree = new();
-
-            var input = GetUnOrderedArray();
-
-            foreach (var VARIABLE in input)
-            {
-                tree.Insert(VARIABLE);
-            }
+            var tree = GetTree();
 
             tree.Insert(42);
-            Console.WriteLine(tree.Delete(42));
+            tree.Delete(42);
             Assert.AreEqual(-1, tree.Search(42));
+        }
+
+        [Test]
+        public void DeleteRemovesItemWithTwoChildrenCorrectly()
+        {
+            var tree = GetTree();
+
+            tree.Delete(5);
+            Assert.AreEqual(-1, tree.Search(5));
+            Assert.AreEqual(1, tree.Search(4));
         }
         
         

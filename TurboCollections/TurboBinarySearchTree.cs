@@ -149,6 +149,17 @@ namespace TurboCollections
 
                 items[itemIndex] = items[currentIndex];
                 items[currentIndex] = default(T);
+
+                var possibleChildIndex = currentIndex * 2 + 1;
+                if (possibleChildIndex < items.Length)
+                {
+                    if (!items[possibleChildIndex].Equals(default(T)))
+                    {
+                        ReInsertItem(possibleChildIndex);
+                    }
+                }
+                
+                
                 return true;
             }
             
