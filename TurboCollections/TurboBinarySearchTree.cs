@@ -98,6 +98,62 @@ namespace TurboCollections
             if (itemIndex == -1)
                 return false;
 
+            if (itemIndex * 2 + 1 > items.Length)
+            {
+                items[itemIndex] = default(T);
+                return true;
+            }
+
+            // Since the array size is doubled, adding one layer to the tree every resize, we only need to check if itemIndex is larger than items.length once.
+            int children = 0;
+            int childIndex = 0;
+            if (!items[itemIndex * 2 + 1].Equals(default(T)))
+            {
+                childIndex = itemIndex * 2 + 1;
+                children++;
+            }
+            if (!items[itemIndex * 2 + 2].Equals(default(T)))
+            {
+                childIndex = itemIndex * 2 + 2;
+                children++;
+            }
+
+            if (children == 0)
+            {
+                // If it doesn't have any children then we simply remove it.
+                items[itemIndex] = default(T);
+                return true;
+            }
+
+            if (children == 1)
+            {
+                var scanIndex = childIndex;
+                // Replace the deleted object with the child tree. Divide each index by 2?
+                ReInsertItem(childIndex);
+                return true;
+            }
+
+            if (children == 2) // todo cleanup
+            {
+                var currentIndex = itemIndex * 2 + 1;
+                var nextIndex = currentIndex;
+                while (currentIndex * 2 + 2 < items.Length)
+                {
+                    nextIndex = nextIndex * 2 + 2;
+
+                    if (items[nextIndex].Equals(default(T)))
+                        break;
+
+                    currentIndex = nextIndex;
+                }
+
+                items[itemIndex] = items[currentIndex];
+                items[currentIndex] = default(T);
+                return true;
+            }
+            
+            
+            #region todo
             // Remove item:
             /*
              * if (itemindex * 2 + 1 > items.length)
@@ -119,18 +175,86 @@ namespace TurboCollections
              *
              * if (children = 2)
              *      go through the left child tree looking for the leaf furthest to the right.
+             *      index = itemIndex * 2 + 1;
+             *      while (true)
+             *          index = index * 2 + 2;
+             *          if (index is outside array)
+             *              move item at index to deleted items index at itemIndex;
+             *              return;
+             *          
              */
-            
-            
+            #endregion
             // TODO instructions: 
-            
+
             // If the Node has no children: Just remove it.
 
             // If the Node has one child: Replace the node with the child node.
-            
+
             // Else: Search either for the Maximum of the left sub-tree (go left and then always right until you find a
             // leaf) or the Minimum of the right sub-tree (go right and then always left) and replace the node with the
             // leaf you just found.
+
+            return false;
+        }
+
+
+
+        void ReInsertItem(int index)
+        {
+            var targetIndexLeft = index * 2 + 1;
+            
+            if (targetIndexLeft >= items.Length)
+            {
+                return;
+            }
+
+            // Reinsert the item in the tree.
+            var cache = items[index];
+            items[index] = default(T);
+            Insert(cache);
+            
+            var targetIndexRight = index * 2 + 2;
+            
+            if (!items[targetIndexLeft].Equals(default(T)))
+            {
+                ReInsertItem(targetIndexLeft);
+            }
+
+            if (!items[targetIndexRight].Equals(default(T)))
+            {
+                ReInsertItem(targetIndexRight);
+            }
+        }
+
+
+
+        /// <summary>
+        /// Beginning of prototype of moving items manually instead of using insert. Might offer better performance if done well.
+        /// </summary>
+        /// <param name="index"></param>
+        void MoveSubTreeUp(int index)
+        {
+            var targetIndexLeft = index * 2 + 1;
+            
+            if (targetIndexLeft >= items.Length)
+            {
+                return;
+            }
+            
+            var targetIndexRight = index * 2 + 2;
+            
+            if (!items[targetIndexLeft].Equals(default(T)))
+            {
+                items[index] = items[targetIndexLeft];
+                items[targetIndexLeft] = default(T);
+                MoveSubTreeUp(targetIndexLeft);
+            }
+            if (!items[targetIndexRight].Equals(default(T)))
+            {
+                items[index + 1] = items[targetIndexLeft];
+                items[targetIndexLeft] = default(T);
+                MoveSubTreeUp(targetIndexLeft);
+            }
         }
         
 
