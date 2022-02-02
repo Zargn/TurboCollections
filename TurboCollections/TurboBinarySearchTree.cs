@@ -1,11 +1,19 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 
 namespace TurboCollections
 {
     public class TurboBinarySearchTree<T> where T : IComparable<T>
     {
-        private T[] items = new T[4];
+        // internal item storage array.
+        private T[] items = new T[1];
 
+        
+        
+        /// <summary>
+        /// Returns current amount of items in the tree
+        /// </summary>
         public int Count { get; private set; }
 
         
@@ -91,6 +99,11 @@ namespace TurboCollections
 
 
 
+        /// <summary>
+        /// Delete a item from the tree.
+        /// </summary>
+        /// <param name="item">item to delete</param>
+        /// <returns>whether the item was found and removed or not</returns>
         public bool Delete(T item)
         {
             var itemIndex = Search(item);
@@ -158,13 +171,12 @@ namespace TurboCollections
                         ReInsertItem(possibleChildIndex);
                     }
                 }
-                
-                
+
                 return true;
             }
             
             
-            #region todo
+            #region Instructions for delete
             // Remove item:
             /*
              * if (itemindex * 2 + 1 > items.length)
@@ -194,7 +206,7 @@ namespace TurboCollections
              *              return;
              *          
              */
-            #endregion
+            
             // TODO instructions: 
 
             // If the Node has no children: Just remove it.
@@ -204,12 +216,17 @@ namespace TurboCollections
             // Else: Search either for the Maximum of the left sub-tree (go left and then always right until you find a
             // leaf) or the Minimum of the right sub-tree (go right and then always left) and replace the node with the
             // leaf you just found.
-
+            #endregion
+            
             return false;
         }
 
 
-
+        
+        /// <summary>
+        /// Inserts the item and calls itself for any possible children of the target item.
+        /// </summary>
+        /// <param name="index">index of item to reinsert in tree</param>
         void ReInsertItem(int index)
         {
             var targetIndexLeft = index * 2 + 1;
@@ -240,6 +257,128 @@ namespace TurboCollections
 
 
         /// <summary>
+        /// Ensure that the size of the internal array can fit all items.
+        /// </summary>
+        /// <param name="sizeIncrease">new size</param>
+        private void EnsureSize(int targetSize)
+        {
+            var currentSize = items.Length;
+            
+            if (currentSize > targetSize)
+                return;
+
+
+            while (currentSize < targetSize)
+            {
+                currentSize = currentSize * 2 + 1;
+            }
+
+            Console.WriteLine("New size: " + currentSize);
+            
+            T[] result = new T[currentSize];
+            for (int i = 0; i < items.Length; i++)
+            {
+                result[i] = items[i];
+            }
+
+            items = result;
+        }
+
+
+
+        // TODO:
+        /*
+            - Insert, Search, Delete,
+            - GetEnumerator: returns all items in order, from min to max
+            - GetInOrder: same as GetEnumerator
+            - GetInReverseOrder: returns all items in reverse order, from max to min
+         */
+
+        
+        
+        /// <summary>
+        /// Return a array of sorted items in reverse from the tree.
+        /// </summary>
+        /// <returns>reverse sorted array from tree</returns>
+        public T[] GetInReverseOrder()
+        {
+            T[] result = new T[Count];
+            int resultIndex = result.Length - 1;
+
+            foreach (var i in GetItemsInOrder(0))
+            {
+                result[resultIndex] = i;
+                resultIndex--;
+            }
+
+            return result;
+        }
+
+        
+        
+        /// <summary>
+        /// Returns a array of sorted items from the tree.
+        /// </summary>
+        /// <returns>sorted array from the tree</returns>
+        public T[] GetInOrder()
+        {
+            T[] result = new T[Count];
+            int resultIndex = 0;
+
+            foreach (var i in GetItemsInOrder(0))
+            {
+                result[resultIndex] = i;
+                resultIndex++;
+            }
+
+            return result;
+        }
+
+        
+        
+        /// <summary>
+        /// Recursive method that returns each element in the tree starting at index sorted from smallest to largest.
+        /// </summary>
+        /// <param name="index">start index</param>
+        /// <returns>IEnumerable with items in correct order</returns>
+        private IEnumerable<T> GetItemsInOrder(int index)
+        {
+            var leftChildIndex = index * 2 + 1;
+            if (leftChildIndex >= items.Length)
+            {
+                Console.WriteLine("Break loop at index: " + index);
+                yield return items[index];
+            }
+            else
+            {
+                var rightChildIndex = index * 2 + 2;
+                if (!items[leftChildIndex].Equals(default(T)))
+                {
+                    foreach (var item in GetItemsInOrder(leftChildIndex))
+                    {
+                        Console.WriteLine($"Returning {item}");
+                        yield return item;
+                    }
+                }
+
+                Console.WriteLine($"Returning: {items[index]}");
+                yield return items[index];
+
+                if (!items[rightChildIndex].Equals(default(T)))
+                {
+                    foreach (var item in GetItemsInOrder(rightChildIndex))
+                    {
+                        Console.WriteLine($"Returning {item}");
+                        yield return item;
+                    }
+                }
+            }
+        }
+
+
+
+        #region Prototypes
+        /// <summary>
         /// Beginning of prototype of moving items manually instead of using insert. Might offer better performance if done well.
         /// </summary>
         /// <param name="index"></param>
@@ -267,46 +406,6 @@ namespace TurboCollections
                 MoveSubTreeUp(targetIndexLeft);
             }
         }
-        
-
-
-
-        /// <summary>
-        /// Ensure that the size of the internal array can fit all items.
-        /// </summary>
-        /// <param name="sizeIncrease">new size</param>
-        private void EnsureSize(int targetSize)
-        {
-            var currentSize = items.Length;
-            
-            if (currentSize > targetSize)
-                return;
-
-
-            while (currentSize < targetSize)
-            {
-                currentSize *= 2;
-            }
-
-            Console.WriteLine("New size: " + currentSize);
-            
-            T[] result = new T[currentSize];
-            for (int i = 0; i < items.Length; i++)
-            {
-                result[i] = items[i];
-            }
-
-            items = result;
-        }
-
-
-
-        // TODO:
-        /*
-            - Insert, Search, Delete,
-            - GetEnumerator: returns all items in order, from min to max
-            - GetInOrder: same as GetEnumerator
-            - GetInReverseOrder: returns all items in reverse order, from max to min
-         */
+        #endregion
     }
 }

@@ -19,6 +19,24 @@ namespace TurboCollections.Test
         {
             return new[] {1, 2, 4, 5, 6, 8, 10, 12, 14, 15, 16, 18};
         }
+        
+        int[] GetReverseOrderedArray()
+        {
+            var result = GetOrderedArray();
+            for (int i = 0; i < result.Length / 2; i++)
+            {
+                var cache = result[i];
+                result[i] = result[result.Length - i - 1];
+                result[result.Length - i - 1] = cache;
+            }
+
+            foreach (var VARIABLE in result)
+            {
+                Console.WriteLine($":- {VARIABLE}");
+            }
+            
+            return result;
+        }
 
         TurboBinarySearchTree<int> GetTree()
         {
@@ -102,7 +120,49 @@ namespace TurboCollections.Test
                 tree.Insert(VARIABLE);
             }
             
+            
+            
             // TODO: Need a getenumerator or similar to finish this test.
+        }
+
+        [Test]
+        public void GetInOrderReturnsCorrectArray()
+        {
+            var tree = GetTree();
+
+            var result = tree.GetInOrder();
+            var wantedResult = GetOrderedArray();
+
+            foreach (var VARIABLE in result)
+            {
+                Console.WriteLine(VARIABLE);
+            }
+            
+            for (int i = 0; i < result.Length; i++)
+            {
+                Console.WriteLine($"Expected: {wantedResult[i]}, Found: {result[i]}");
+                Assert.AreEqual(wantedResult[i], result[i]);
+            }
+        }
+        
+        [Test]
+        public void GetInReverseOrderReturnsCorrectArray()
+        {
+            var tree = GetTree();
+
+            var result = tree.GetInReverseOrder();
+            var wantedResult = GetReverseOrderedArray();
+
+            foreach (var VARIABLE in result)
+            {
+                Console.WriteLine(VARIABLE);
+            }
+            
+            for (int i = 0; i < result.Length; i++)
+            {
+                Console.WriteLine($"Expected: {wantedResult[i]}, Found: {result[i]}");
+                Assert.AreEqual(wantedResult[i], result[i]);
+            }
         }
     }
 }
