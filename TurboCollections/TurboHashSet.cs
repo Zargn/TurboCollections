@@ -34,6 +34,16 @@
         public bool Insert(T item)
         {
             return false;
+            
+            /*
+             * 1. Pick the index by doing item.hashcode %[Modulo] hashTableSize[items.length]
+             * 2. Check if that index already has a item.
+             * 3. if not: Then add the put the item in that slot.
+             * 4. if it has: Check if that item is the same as the adding one.
+             * 5.     if it is: return true.
+             * 6.     if not: Attempt from step two with the next index in the array a maximum of two times.
+             * 7.        if more than 2 tries is needed: Resize the internal array and then try to add them again.
+             */
         }
 
         
@@ -46,6 +56,15 @@
         public bool Exists(T item)
         {
             return false;
+            
+            /*
+             * 1. Pick the index by doing item.hashcode %[Modulo] hashTableSize[items.length]
+             * 2. Check if that index holds a item.
+             * 3.   if it does: Check if that item is the one we are looking for.
+             * 4.       if it is: Return true.
+             * 5.       if not: Attempt from step 2 with the next index in the array, for a maximum of two times.
+             * 6.           if more than two tries pass: Return false.
+             */
         }
 
         
