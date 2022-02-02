@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace TurboCollections
 {
-    public class TurboBinarySearchTree<T> where T : IComparable<T>
+    public class TurboBinarySearchTree<T> : IEnumerable<T> where T : IComparable<T>
     {
         // internal item storage array.
         private T[] items = new T[1];
@@ -374,6 +374,96 @@ namespace TurboCollections
                 }
             }
         }
+
+
+        // private Enumerator GetEnumerator()
+        // {
+        //     return new Enumerator(items, Count);
+        // }
+
+        IEnumerator<T> IEnumerable<T>.GetEnumerator()
+        {
+            return GetItemsInOrder(0).GetEnumerator();
+            // return GetEnumerator();
+        }
+
+        // public Enumerator GetEnumerator()
+        // {
+        //     
+        // }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetItemsInOrder(0).GetEnumerator();
+            // return GetEnumerator();
+        }
+
+
+        // private struct Enumerator : IEnumerator<T>
+        // {
+        //     private readonly T[] items;
+        //     private readonly int count;
+        //     private int index;
+        //     private int iterationNumber;
+        //
+        //     public Enumerator(T[] items, int count)
+        //     {
+        //         this.items = items;
+        //         this.count = count;
+        //         this.index = 0;
+        //         this.iterationNumber = 0;
+        //     }
+        //
+        //
+        //     private int GetNextIndex(int index)
+        //     {
+        //         int result;
+        //         
+        //         /*
+        //          * While result < items.length
+        //          *      Go down and left once.
+        //          *      if items[result] == default
+        //          *          return result; 
+        //          */
+        //     }
+        //     
+        //     
+        //     public bool MoveNext()
+        //     {
+        //         if (iterationNumber >= count)
+        //             return false;
+        //         
+        //         // how to get the next item?
+        //         
+        //         /*
+        //          * Get the first item.
+        //          * index = 
+        //          *
+        //          *
+        //          *
+        //          *
+        //          *
+        //          *
+        //          *
+        //          * 
+        //          */
+        //         return false;
+        //     }
+        //
+        //     public void Reset()
+        //     {
+        //         throw new NotImplementedException();
+        //     }
+        //
+        //     public T Current => items[index];
+        //
+        //     object IEnumerator.Current => Current;
+        //
+        //     public void Dispose()
+        //     {
+        //         throw new NotImplementedException();
+        //     }
+        // }
 
 
 

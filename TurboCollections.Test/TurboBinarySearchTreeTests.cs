@@ -106,23 +106,15 @@ namespace TurboCollections.Test
             Assert.AreEqual(-1, tree.Search(5));
             Assert.AreEqual(1, tree.Search(4));
         }
-        
-        
+
         [Test]
-        public void SearchMethodReturnsCorrectArray()
+        public void SearchReturnsCorrectIndex()
         {
-            TurboBinarySearchTree<int> tree = new();
-
-            var input = GetUnOrderedArray();
-
-            foreach (var VARIABLE in input)
-            {
-                tree.Insert(VARIABLE);
-            }
+            var tree = GetTree();
             
-            
-            
-            // TODO: Need a getenumerator or similar to finish this test.
+            Assert.AreEqual(9, tree.Search(6));
+            Assert.AreEqual(0, tree.Search(10));
+            Assert.AreEqual(1, tree.Search(5));
         }
 
         [Test]
@@ -162,6 +154,21 @@ namespace TurboCollections.Test
             {
                 Console.WriteLine($"Expected: {wantedResult[i]}, Found: {result[i]}");
                 Assert.AreEqual(wantedResult[i], result[i]);
+            }
+        }
+
+        [Test]
+        public void GetEnumeratorGivesCorrectEnumerator()
+        {
+            var tree = GetTree();
+
+            var wantedResult = GetOrderedArray();
+
+            int i = 0;
+            foreach (var VARIABLE in tree)
+            {
+                Assert.AreEqual(wantedResult[i], VARIABLE);
+                i++;
             }
         }
     }
