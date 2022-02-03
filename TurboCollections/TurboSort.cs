@@ -31,7 +31,7 @@ namespace TurboCollections.Sorting
 
 
         /// <summary>
-        // /// Holds a value and that values index for use in quicksort pivots.
+        /// Holds a value and that values index for use in quicksort pivots.
         /// </summary>
         struct pivotElement
         {
