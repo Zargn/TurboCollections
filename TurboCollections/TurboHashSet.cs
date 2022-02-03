@@ -2,19 +2,6 @@
 {
     public class TurboHashSet<T>
     {
-        // TODO list:
-        // Look into and decide on a collision resolution strategy.
-        
-        // Implement a Bool Insert(T item) method.
-        // Implement a Bool Exists(T item) method.
-        // Implement a Bool Remove(T item) method.
-        
-        // Implement a internal Resize() method.
-
-
-
-
-
         private T[] items = new T[48];
         
         public int Count { get; private set; }
@@ -70,7 +57,7 @@
             Count++;
             return true;
 
-            /*
+            /* PseudoCode
              * 1. Pick the index by doing item.hashcode %[Modulo] hashTableSize[items.length]
              * 2. Check if that index already has a item.
              * 3. if not: Then add the item in that slot.
@@ -90,9 +77,10 @@
         /// <returns>bool representing whether it was found or not</returns>
         public bool Exists(T item)
         {
+            throw new System.Exception("Exists is not yet implemented!");
             return false;
             
-            /*
+            /* PseudoCode
              * 1. Pick the index by doing item.hashcode %[Modulo] hashTableSize[items.length]
              * 2. Check if that index holds a item.
              * 3.   if it does: Check if that item is the one we are looking for.
@@ -111,6 +99,7 @@
         /// <returns>bool representing whether it was found and removed or not</returns>
         public bool Remove(T item)
         {
+            throw new System.Exception("Remove is not yet implemented!");
             return false;
         }
 
