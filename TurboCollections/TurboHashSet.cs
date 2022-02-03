@@ -10,35 +10,70 @@
         // Implement a Bool Remove(T item) method.
         
         // Implement a internal Resize() method.
-        
-        
-        
-        
-        
-        private T[] items;
+
+
+
+
+
+        private T[] items = new T[48];
         
         public int Count { get; private set; }
         
-        public TurboHashSet(int startSize = 48)
-        {
-            items = new T[startSize];
-        }
-
-
+        // TODO: This is not needed. Stop doing unneeded optimisations!
+        // public TurboHashSet(int startSize = 48)
+        // {
+        //     items = new T[startSize];
+        // }
+        
+        
 
         /// <summary>
         /// Insert the item into the hashset.
         /// </summary>
         /// <param name="item">item to insert</param>
-        /// <returns>bool representing if the item was already inside</returns>
+        /// <returns>False if item was present already, and true if it was added.</returns>
         public bool Insert(T item)
         {
-            return false;
+            if (item.Equals(default(T)))
+                throw new System.Exception("Error: Can't add default value object to hashset!");
             
+            var itemHash = item.GetHashCode();
+
+            itemHash %= items.Length;
+            int targetIndex = -1;
+
+            
+            for (int i = 0; i < 3; i++)
+            {
+                if (items[itemHash].Equals(default(T)) && targetIndex == -1)
+                {
+                    targetIndex = itemHash;
+                }
+
+                if (items[itemHash].Equals(item))
+                {
+                    return false;
+                }
+
+                itemHash++;
+                if (itemHash > items.Length) itemHash -= items.Length;
+            }
+
+            if (targetIndex == -1)
+            {
+                Resize();
+                return Insert(item);
+            }
+
+            Console.WriteLine($"inserted {item} at index: {targetIndex}");
+            items[targetIndex] = item;
+            Count++;
+            return true;
+
             /*
              * 1. Pick the index by doing item.hashcode %[Modulo] hashTableSize[items.length]
              * 2. Check if that index already has a item.
-             * 3. if not: Then add the put the item in that slot.
+             * 3. if not: Then add the item in that slot.
              * 4. if it has: Check if that item is the same as the adding one.
              * 5.     if it is: return true.
              * 6.     if not: Attempt from step two with the next index in the array a maximum of two times.
@@ -86,7 +121,7 @@
         /// </summary>
         private void Resize()
         {
-            
+            throw new System.Exception("Resize is not yet implemented!");
         }
 
         
