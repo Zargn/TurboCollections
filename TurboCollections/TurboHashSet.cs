@@ -3,22 +3,6 @@
     // TODO:
     /*
      * Look into prime numbers as length of internal array. How would I calculate the next one?
-     * Coalesced hashing. Combining Chaining and Open Addressing.
-     */
-    
-    // TODO: Coalesced hashing.
-    /*
-     * Need a struct that holds T item, and int nextIndex.
-     *
-     * Still uses the same collision strategy.
-     * Main difference is that objects "remembers" which objects comes after it if there is a conflict.
-     *
-     *
-     *
-     * if (Equals(item, null))
-     *      index = 0;
-     * else
-     *      index = item.GetHash.
      */
 
     public class TurboHashSet<T>
@@ -38,18 +22,24 @@
                 hasItem = true;
             }
         }
+
+
+        private const double TableToTotalLenghtRatio = 0.86;
+        private int cellarStartIndex;
+        
         
         private container[] items = new container[48];
         
         public int Count { get; private set; }
+
         
-        // TODO: This is not needed. Stop doing unneeded optimisations!
-        // public TurboHashSet(int startSize = 48)
-        // {
-        //     items = new T[startSize];
-        // }
+        // Automatically set the cellarStartIndex on instantiation.
+        public TurboHashSet()
+        {
+            cellarStartIndex = (int) (items.Length * TableToTotalLenghtRatio + 1);
+        }
         
-        
+
 
         /// <summary>
         /// Insert the item into the hashset.
@@ -58,54 +48,72 @@
         /// <returns>False if item was present already, and true if it was added.</returns>
         public bool Insert(T item)
         {
-            var itemHash = GetIndexFromHash(item);
-            
-            
-            var targetIndex = -1;
+            /* PseudoCode
+             * Get index from item.
+             *
+             * Repeat three times:
+             * {
+             * Check if index holds a item.
+             * if it does:
+             *      Check if index holds same item.
+             *      if it does:
+             *          return false.
+             *      if not:
+             *          Check if item at index has a nextIndex value.
+             *          if it does:
+             *              Check if the container at nextIndex holds a item.
+             * if not && we do not have a remembered index:
+             *      remember index for later.
+             * }    
+             */
 
-            for (int i = 0; i < 3; i++)
+            var hashIndex = GetIndexFromHash(item);
+            int oldIndex = 0;
+
+            // Check if the index in the table is free.
+            if (!items[hashIndex].hasItem)
             {
-                Console.WriteLine(items[itemHash].nextIndex);
-                if (!items[itemHash].hasItem && targetIndex == -1)
-                {
-                    targetIndex = itemHash;
-                }
-                else if (items[itemHash].hasItem && Equals(items[itemHash].item, item))
+                items[hashIndex] = new container(item);
+                Count++;
+                return true;
+            }
+                
+            // If it was occupied then scan the chain.
+            while (items[hashIndex].hasItem)
+            {
+                if (Equals(items[hashIndex].item, item))
                 {
                     return false;
                 }
-
-                itemHash = CollisionResolution(itemHash);
-                    
-                    
-                    
-                    
-                // if (items[itemHash].item.Equals(default(T)) && targetIndex == -1)
-                // {
-                //     targetIndex = itemHash;
-                // }
-                //
-                // if (items[itemHash].item.Equals(item))
-                // {
-                //     return false;
-                // }
-                //
-                // itemHash = CollisionResolution(itemHash);
+            
+                if (items[hashIndex].nextIndex != -1)
+                {
+                    hashIndex = items[hashIndex].nextIndex;
+                }
+                else
+                {
+                    oldIndex = hashIndex;
+                    break;
+                }
             }
 
-            if (targetIndex == -1)
+            // Select location for the item.
+            for (int i = cellarStartIndex; i < items.Length; i++)
             {
-                Resize();
-                return Insert(item);
+                if (!items[i].hasItem)
+                {
+                    items[i] = new container(item);
+                    items[oldIndex].nextIndex = i;
+                    Count++;
+                    return true;
+                }
             }
+            
+            // If we reach this part then that means the item wasn't found, but it also didn't fit in the cellar.
+            Resize();
+            return Insert(item);
 
-            Console.WriteLine($"inserted {item} at index: {targetIndex}");
-            items[targetIndex] = new container(item);
-            items[targetIndex].nextIndex = -1;
-            Count++;
-            return true;
-
-            /* PseudoCode
+            /* PseudoCode OLD
              * 1. Pick the index by doing item.hashcode %[Modulo] hashTableSize[items.length]
              * 2. Check if that index has the default value && we haven't "remembered" any index in the iterations before.
              * 3. if it has: Then remember that index.
@@ -119,8 +127,8 @@
              */
         }
 
-        
-        
+
+
         /// <summary>
         /// Search the array for the item.
         /// </summary>
@@ -129,16 +137,27 @@
         public bool Exists(T item)
         {
             var hashIndex = GetIndexFromHash(item);
-
-            for (int i = 0; i < 3; i++)
+            
+            while (items[hashIndex].hasItem)
             {
                 if (Equals(items[hashIndex].item, item))
+                {
                     return true;
-                hashIndex = CollisionResolution(hashIndex);
+                }
+            
+                if (items[hashIndex].nextIndex != -1)
+                {
+                    hashIndex = items[hashIndex].nextIndex;
+                }
+                else
+                {
+                    break;
+                }
             }
 
             return false;
-            
+
+
             /* PseudoCode
              * 1. Get hashcode from item
              * 2. Get index from hashcode
@@ -218,6 +237,8 @@
                 if (item.hasItem)
                     Insert(item.item);
             }
+            
+            cellarStartIndex = (int) (items.Length * TableToTotalLenghtRatio + 1);
 
             /* PseudoCode
              * Create local variable copy of items.
@@ -239,12 +260,19 @@
         private int CollisionResolution(int index)
         {
             index++;
-            if (index > items.Length) index -= items.Length;
+            if (index < cellarStartIndex || index > items.Length)
+                index = cellarStartIndex;
+
             return index;
         }
 
 
 
+        /// <summary>
+        /// Extract a index using a hash function.
+        /// </summary>
+        /// <param name="item">item to extract hash from</param>
+        /// <returns>hashcode in int form</returns>
         private int GetIndexFromHash(T item)
         {
             if (Equals(item, null))
@@ -252,7 +280,7 @@
             
             var itemHash = item.GetHashCode();
 
-            itemHash %= items.Length;
+            itemHash %= (int) (items.Length * TableToTotalLenghtRatio);
             return itemHash;
         }
     }

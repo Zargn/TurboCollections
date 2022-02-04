@@ -114,6 +114,7 @@ namespace TurboCollections.Test
             Assert.AreEqual(true, hashSet.Insert(null));
             Assert.AreEqual(true, hashSet.Exists(null));
             Assert.AreEqual(true, hashSet.Remove(null));
+            Assert.AreEqual(false, hashSet.Exists(null));
         }
     }
 }
