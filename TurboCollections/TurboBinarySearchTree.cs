@@ -376,6 +376,21 @@ namespace TurboCollections
         }
 
 
+
+        public TurboBinarySearchTree<T> Clone()
+        {
+            TurboBinarySearchTree<T> result = new();
+
+            for (int i = 0; i < items.Length; i++)
+            {
+                if (!Equals(items[i], default(T)))
+                    result.Insert(items[i]);
+            }
+
+            return result;
+        }
+
+
         // private Enumerator GetEnumerator()
         // {
         //     return new Enumerator(items, Count);

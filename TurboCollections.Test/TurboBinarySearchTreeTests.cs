@@ -171,5 +171,19 @@ namespace TurboCollections.Test
                 i++;
             }
         }
+
+        [Test]
+        public void CloneReturnsCorrectTree()
+        {
+            var tree = GetTree();
+            var tree2 = tree.Clone();
+
+            var wantedResult = GetOrderedArray();
+
+            for (int i = 0; i < wantedResult.Length; i++)
+            {
+                Assert.AreEqual(tree.Search(wantedResult[i]), tree2.Search(wantedResult[i]));
+            }
+        }
     }
 }
