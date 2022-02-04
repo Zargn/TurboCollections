@@ -110,7 +110,24 @@
         /// </summary>
         private void Resize()
         {
-            throw new System.Exception("Resize is not yet implemented!");
+            var oldItemArray = items;
+            items = new T[items.Length * 2];
+
+            Count = 0;
+            
+            foreach (var item in oldItemArray)
+            {
+                if (!item.Equals(default(T)))
+                    Insert(item);
+            }
+
+            /* PseudoCode
+             * Create local variable copy of items.
+             * resize items[] by making it a new array with double the size.
+             * go through the local items array
+             * if the item at the slot is not default:
+             *      insert() that item.
+             */
         }
 
         
