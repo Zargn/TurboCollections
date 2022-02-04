@@ -23,13 +23,10 @@
         {
             if (item.Equals(default(T)))
                 throw new System.Exception("Error: Can't add default value object to hashset!");
-            
-            var itemHash = item.GetHashCode();
 
-            itemHash %= items.Length;
-            int targetIndex = -1;
+            var itemHash = GetIndexFromHash(item);
+            var targetIndex = -1;
 
-            
             for (int i = 0; i < 3; i++)
             {
                 if (items[itemHash].Equals(default(T)) && targetIndex == -1)
@@ -42,8 +39,7 @@
                     return false;
                 }
 
-                itemHash++;
-                if (itemHash > items.Length) itemHash -= items.Length;
+                itemHash = CollisionResolution(itemHash);
             }
 
             if (targetIndex == -1)
@@ -77,10 +73,29 @@
         /// <returns>bool representing whether it was found or not</returns>
         public bool Exists(T item)
         {
-            throw new System.Exception("Exists is not yet implemented!");
+            var hashIndex = GetIndexFromHash(item);
+
+            for (int i = 0; i < 3; i++)
+            {
+                if (items[hashIndex].Equals(item))
+                    return true;
+                hashIndex = CollisionResolution(hashIndex);
+            }
+
             return false;
             
             /* PseudoCode
+             * 1. Get hashcode from item
+             * 2. Get index from hashcode
+             * 3. check if the index has the item searched for.
+             * 4.       if it is: Return true.
+             * 5. increase index using CollisionResolution(index)
+             * 6. repeat step 3 to 5 up to a maximum of 3 times.
+             * 7. If this step is reached, then the item wasn't found.
+             *    therefore return false.
+             */
+
+            /* PseudoCode 2
              * 1. Pick the index by doing item.hashcode %[Modulo] hashTableSize[items.length]
              * 2. Check if that index holds a item.
              * 3.   if it does: Check if that item is the one we are looking for.
@@ -138,9 +153,21 @@
         /// insert at the end of the method.
         /// </summary>
         /// <returns>bool representing if the collision was handled or not</returns>
-        private bool CollisionHandler()
+        private int CollisionResolution(int index)
         {
-            return false;
+            index++;
+            if (index > items.Length) index -= items.Length;
+            return index;
+        }
+
+
+
+        private int GetIndexFromHash(T item)
+        {
+            var itemHash = item.GetHashCode();
+
+            itemHash %= items.Length;
+            return itemHash;
         }
     }
 }
