@@ -1,8 +1,45 @@
 ﻿namespace TurboCollections
 {
+    // TODO:
+    /*
+     * Look into prime numbers as length of internal array. How would I calculate the next one?
+     * Coalesced hashing. Combining Chaining and Open Addressing.
+     */
+    
+    // TODO: Coalesced hashing.
+    /*
+     * Need a struct that holds T item, and int nextIndex.
+     *
+     * Still uses the same collision strategy.
+     * Main difference is that objects "remembers" which objects comes after it if there is a conflict.
+     *
+     *
+     *
+     * if (Equals(item, null))
+     *      index = 0;
+     * else
+     *      index = item.GetHash.
+     */
+
     public class TurboHashSet<T>
     {
-        private T[] items = new T[48];
+        private struct container
+        {
+            public T item;
+            
+            public int nextIndex = -2;
+
+            public bool hasItem;
+
+            public container(T item)
+            {
+                this.item = item;
+                nextIndex = -1;
+                hasItem = true;
+            }
+        }
+        
+        private container[] items = new container[48];
         
         public int Count { get; private set; }
         
@@ -21,25 +58,39 @@
         /// <returns>False if item was present already, and true if it was added.</returns>
         public bool Insert(T item)
         {
-            if (item.Equals(default(T)))
-                throw new System.Exception("Error: Can't add default value object to hashset!");
-
             var itemHash = GetIndexFromHash(item);
+            
+            
             var targetIndex = -1;
 
             for (int i = 0; i < 3; i++)
             {
-                if (items[itemHash].Equals(default(T)) && targetIndex == -1)
+                Console.WriteLine(items[itemHash].nextIndex);
+                if (!items[itemHash].hasItem && targetIndex == -1)
                 {
                     targetIndex = itemHash;
                 }
-
-                if (items[itemHash].Equals(item))
+                else if (items[itemHash].hasItem && Equals(items[itemHash].item, item))
                 {
                     return false;
                 }
 
                 itemHash = CollisionResolution(itemHash);
+                    
+                    
+                    
+                    
+                // if (items[itemHash].item.Equals(default(T)) && targetIndex == -1)
+                // {
+                //     targetIndex = itemHash;
+                // }
+                //
+                // if (items[itemHash].item.Equals(item))
+                // {
+                //     return false;
+                // }
+                //
+                // itemHash = CollisionResolution(itemHash);
             }
 
             if (targetIndex == -1)
@@ -49,18 +100,22 @@
             }
 
             Console.WriteLine($"inserted {item} at index: {targetIndex}");
-            items[targetIndex] = item;
+            items[targetIndex] = new container(item);
+            items[targetIndex].nextIndex = -1;
             Count++;
             return true;
 
             /* PseudoCode
              * 1. Pick the index by doing item.hashcode %[Modulo] hashTableSize[items.length]
-             * 2. Check if that index already has a item.
-             * 3. if not: Then add the item in that slot.
-             * 4. if it has: Check if that item is the same as the adding one.
+             * 2. Check if that index has the default value && we haven't "remembered" any index in the iterations before.
+             * 3. if it has: Then remember that index.
+             * 4. if not: Check if that item is the same as the adding one.
              * 5.     if it is: return true.
              * 6.     if not: Attempt from step two with the next index in the array a maximum of two times.
-             * 7.        if more than 2 tries is needed: Resize the internal array and then try to add them again.
+             * 7. increase the index by one (If using the standard collision resolution method)
+             * 7. Repeat step 2 to 7, 3 times.
+             * 8. if no index was remembered then resize the array and insert the item again.
+             * 9. if a index was remembered then add the item to that index.
              */
         }
 
@@ -77,7 +132,7 @@
 
             for (int i = 0; i < 3; i++)
             {
-                if (items[hashIndex].Equals(item))
+                if (Equals(items[hashIndex].item, item))
                     return true;
                 hashIndex = CollisionResolution(hashIndex);
             }
@@ -118,9 +173,9 @@
 
             for (int i = 0; i < 3; i++)
             {
-                if (items[hashIndex].Equals(item))
+                if (Equals(items[hashIndex].item, item))
                 {
-                    items[hashIndex] = default(T);
+                    items[hashIndex] = new container();
                     Count--;
                     return true;
                 }
@@ -154,14 +209,14 @@
         private void Resize()
         {
             var oldItemArray = items;
-            items = new T[items.Length * 2];
+            items = new container[items.Length * 2];
 
             Count = 0;
             
             foreach (var item in oldItemArray)
             {
-                if (!item.Equals(default(T)))
-                    Insert(item);
+                if (item.hasItem)
+                    Insert(item.item);
             }
 
             /* PseudoCode
@@ -192,6 +247,9 @@
 
         private int GetIndexFromHash(T item)
         {
+            if (Equals(item, null))
+                return 0;
+            
             var itemHash = item.GetHashCode();
 
             itemHash %= items.Length;

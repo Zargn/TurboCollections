@@ -149,6 +149,8 @@ namespace TurboCollectionsSpeedTests
 
         void StackTester()
         {
+            string[] t = new string[5];
+            Console.WriteLine(t[3].Length);
             Console.WriteLine("Not implemented!");
         }
 

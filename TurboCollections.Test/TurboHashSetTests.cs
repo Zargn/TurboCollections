@@ -106,5 +106,14 @@ namespace TurboCollections.Test
                 Assert.AreEqual(false, hashSet.Remove(n));
             }
         }
+
+        [Test]
+        public void NullIsValidItem()
+        {
+            TurboHashSet<object> hashSet = new();
+            Assert.AreEqual(true, hashSet.Insert(null));
+            Assert.AreEqual(true, hashSet.Exists(null));
+            Assert.AreEqual(true, hashSet.Remove(null));
+        }
     }
 }
