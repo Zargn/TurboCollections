@@ -30,9 +30,8 @@ namespace TurboCollections.Test
             TurboHashSet<int> hashSet = new TurboHashSet<int>();
 
             for (int i = 1; i < itemsToAdd + 1; i++)
-            {
                 hashSet.Insert(i*i);
-            }
+            
 
             Assert.AreEqual(itemsToAdd, hashSet.Count);
         }
@@ -54,9 +53,8 @@ namespace TurboCollections.Test
             var numbers = GetNumberArray();
 
             for (int i = 0; i < numbers.Length; i++)
-            {
                 Assert.AreEqual(true, hashSet.Exists(numbers[i]));
-            }
+            
         }
 
         [Test]
@@ -66,8 +64,46 @@ namespace TurboCollections.Test
             var numbers = GetNumberArray();
 
             for (int i = 0; i < numbers.Length; i++)
-            {
                 Assert.AreEqual(false, hashSet.Exists(numbers[i] * 2));
+        }
+
+        [Test]
+        public void RemoveRemovesItemsCorrectly()
+        {
+            var hashSet = GetHashSet();
+            var numbers = GetNumberArray();
+
+            for (int i = 0; i < numbers.Length; i++)
+            {
+                hashSet.Remove(numbers[i]);
+                Assert.AreEqual(false, hashSet.Exists(numbers[i]));
+            }
+        }
+
+        [Test]
+        public void RemoveDecreasesCount()
+        {
+            var hashSet = GetHashSet();
+            var numbers = GetNumberArray();
+
+            Assert.AreEqual(numbers.Length, hashSet.Count);
+
+            foreach (int i in numbers)
+                hashSet.Remove(i);
+
+            Assert.AreEqual(0, hashSet.Count);
+        }
+
+        [Test]
+        public void RemoveReturnsCorrectBool()
+        {
+            var hashSet = GetHashSet();
+            var number = GetNumberArray();
+
+            foreach (var n in number)
+            {
+                Assert.AreEqual(true, hashSet.Remove(n));
+                Assert.AreEqual(false, hashSet.Remove(n));
             }
         }
     }

@@ -114,8 +114,36 @@
         /// <returns>bool representing whether it was found and removed or not</returns>
         public bool Remove(T item)
         {
-            throw new System.Exception("Remove is not yet implemented!");
+            var hashIndex = GetIndexFromHash(item);
+
+            for (int i = 0; i < 3; i++)
+            {
+                if (items[hashIndex].Equals(item))
+                {
+                    items[hashIndex] = default(T);
+                    Count--;
+                    return true;
+                }
+
+                hashIndex = CollisionResolution(hashIndex);
+            }
+
             return false;
+
+            /* PseudoCode
+             * 1. Get hashcode of object.
+             * 2. Get index of hash.
+             * 3. Check if index holds item
+             * 4. if it does:
+             * 5.       remove the item.
+             * 6.       decrease count.
+             * 7.       return true.
+             * 8. if it does not:
+             * 9.       set index using CollisionResolution(index)
+             * 10.       repeat from step 3 up to a maximum of 3 times.
+             * 11. if this step is reached then the item was not found.
+             * 12. return false.
+             */
         }
 
         
