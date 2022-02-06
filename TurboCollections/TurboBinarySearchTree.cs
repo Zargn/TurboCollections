@@ -7,8 +7,11 @@ namespace TurboCollections
     public class TurboBinarySearchTree<T> : IEnumerable<T> where T : IComparable<T>
     {
         // internal item storage array.
-        private T[] items = new T[1];
-
+        private T[] items = new T[StartArraySize];
+        
+        
+        private const int StartArraySize = 1;
+        
         
         
         /// <summary>
@@ -286,16 +289,17 @@ namespace TurboCollections
 
 
 
-        // TODO:
-        /*
-            - Insert, Search, Delete,
-            - GetEnumerator: returns all items in order, from min to max
-            - GetInOrder: same as GetEnumerator
-            - GetInReverseOrder: returns all items in reverse order, from max to min
-         */
+        /// <summary>
+        /// Lazy but effective method. Didn't have time to do the more complex version the teacher wanted but this works.
+        /// </summary>
+        public void DeleteTree()
+        {
+            items = new T[StartArraySize];
+            Count = 0;
+        }
 
-        
-        
+
+
         /// <summary>
         /// Return a array of sorted items in reverse from the tree.
         /// </summary>

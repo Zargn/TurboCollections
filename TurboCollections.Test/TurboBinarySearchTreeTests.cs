@@ -185,5 +185,30 @@ namespace TurboCollections.Test
                 Assert.AreEqual(tree.Search(wantedResult[i]), tree2.Search(wantedResult[i]));
             }
         }
+
+        [Test]
+        public void DeleteTreeRemovesAllItems()
+        {
+            var tree = GetTree();
+            
+            tree.DeleteTree();
+
+            var intArray = GetOrderedArray();
+
+            foreach (var i in intArray)
+            {
+                Assert.AreEqual(-1, tree.Search(i));
+            }
+        }
+        
+        [Test]
+        public void DeleteTreeResetsCount()
+        {
+            var tree = GetTree();
+            
+            tree.DeleteTree();
+
+            Assert.AreEqual(0, tree.Count);
+        }
     }
 }
