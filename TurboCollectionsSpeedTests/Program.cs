@@ -149,10 +149,99 @@ namespace TurboCollectionsSpeedTests
 
         void StackTester()
         {
-            string[] t = new string[5];
-            Console.WriteLine(t[3].Length);
-            Console.WriteLine("Not implemented!");
+            Stopwatch stopwatch = new();
+            stopwatch.Start();
+
+            int nr1 = 0;
+            int nr2 = 0;
+            int nr3 = 0;
+            
+            for (int i = 0; i < 10; i++)
+            {
+                nr1 = 0;
+                nr2 = 0;
+                nr3 = 0;
+            
+                for (int j = 1; j < testIterations; j++)
+                {
+                    nr1 = nr1 * j + j;
+                    nr2 = nr2 / j + j;
+                    nr3 = nr3 + j + j;
+                }
+            }
+            nr1 = nr2 - nr1 / nr3;
+            
+            stopwatch.Stop();
+
+            Console.WriteLine(nr1);
+            var checkedResult = stopwatch.ElapsedMilliseconds;
+            
+            stopwatch.Reset();
+
+            Console.WriteLine("Second test start");
+            
+            stopwatch.Start();
+
+            unchecked
+            {
+                for (int i = 0; i < 10; i++)
+                {
+                    nr1 = 0;
+                    nr2 = 0;
+                    nr3 = 0;
+            
+                    for (int j = 1; j < testIterations; j++)
+                    {
+                        nr1 = nr1 * j + j;
+                        nr2 = nr2 / j + j;
+                        nr3 = nr3 + j + j;
+                    }
+                }
+
+                nr1 = nr2 - nr1 / nr3;
+            }
+            
+            stopwatch.Stop();
+            Console.WriteLine(nr1);
+            
+            var uncheckedResult = stopwatch.ElapsedMilliseconds;
+
+            
+            
+            Console.WriteLine("third test start");
+            
+            stopwatch.Start();
+
+
+            for (int i = 0; i < 10; i++)
+            {
+                nr1 = 0;
+                nr2 = 0;
+                nr3 = 0;
+            
+                for (int j = 1; j < testIterations; j++)
+                {
+                    nr1 = nr1C(nr1, j);
+                    nr2 = nr2C(nr2, j);
+                    nr3 = nr3C(nr3, j);
+                }
+            }
+
+            nr1 = nr2 - nr1 / nr3;
+            
+            
+            stopwatch.Stop();
+            Console.WriteLine(nr1);
+            var methodResult = stopwatch.ElapsedMilliseconds;
+            
+            Console.WriteLine($"checkedresult: {checkedResult}");
+            Console.WriteLine($"uncheckedresult: {uncheckedResult}");
+            Console.WriteLine($"methodresult: {methodResult}");
         }
+
+        int nr1C(int nr1, int j) => nr1 * j + j;
+        int nr2C(int nr2, int j) => nr2 / j + j;
+        int nr3C(int nr3, int j) => nr3 + j + j;
 
         void QueueTester()
         {
