@@ -153,20 +153,19 @@ namespace TurboCollectionsSpeedTests
             stopwatch.Start();
 
             int nr1 = 0;
-            int nr2 = 0;
-            int nr3 = 0;
+            int nr2 = 1;
+            int nr3 = 1;
             
             for (int i = 0; i < 10; i++)
             {
-                nr1 = 0;
-                nr2 = 0;
-                nr3 = 0;
-            
+                nr1 = 1;
+
                 for (int j = 1; j < testIterations; j++)
                 {
-                    nr1 = nr1 * j + j;
-                    nr2 = nr2 / j + j;
-                    nr3 = nr3 + j + j;
+                    nr1 = nr1 * j;
+                    nr1 = j - nr1;
+                    nr1 = nr1 * -2;
+                    nr1 = 5 + 3 - 2 + nr1;
                 }
             }
             nr1 = nr2 - nr1 / nr3;
@@ -186,15 +185,14 @@ namespace TurboCollectionsSpeedTests
             {
                 for (int i = 0; i < 10; i++)
                 {
-                    nr1 = 0;
-                    nr2 = 0;
-                    nr3 = 0;
-            
+                    nr1 = 1;
+
                     for (int j = 1; j < testIterations; j++)
                     {
-                        nr1 = nr1 * j + j;
-                        nr2 = nr2 / j + j;
-                        nr3 = nr3 + j + j;
+                        nr1 = nr1 * j;
+                        nr1 = j - nr1;
+                        nr1 = nr1 * -2;
+                        nr1 = 5 + 3 - 2 + nr1;
                     }
                 }
 
@@ -215,15 +213,11 @@ namespace TurboCollectionsSpeedTests
 
             for (int i = 0; i < 10; i++)
             {
-                nr1 = 0;
-                nr2 = 0;
-                nr3 = 0;
-            
+                nr1 = 1;
+
                 for (int j = 1; j < testIterations; j++)
                 {
-                    nr1 = nr1C(nr1, j);
-                    nr2 = nr2C(nr2, j);
-                    nr3 = nr3C(nr3, j);
+                    nr1 = calc(nr1, j);
                 }
             }
 
@@ -239,6 +233,14 @@ namespace TurboCollectionsSpeedTests
             Console.WriteLine($"methodresult: {methodResult}");
         }
 
+        int calc(int nr1, int j)
+        {
+            nr1 = nr1 * j;
+            nr1 = j - nr1;
+            nr1 = nr1 * -2;
+            nr1 = 5 + 3 - 2 + nr1;
+            return nr1;
+        }
         int nr1C(int nr1, int j) => nr1 * j + j;
         int nr2C(int nr2, int j) => nr2 / j + j;
         int nr3C(int nr3, int j) => nr3 + j + j;
